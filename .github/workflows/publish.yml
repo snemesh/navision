@@ -54,5 +54,8 @@ jobs:
               gh release create "$tag" "$out"/* --target main --title "$title" --notes-file "$RUNNER_TEMP/notes-$tag" --prerelease="$pre" --latest="$latest"
             fi
           done
-      - name: Delete the drop branch
-        run: git push origin --delete drop
+      - name: Delete the drop branches
+        # drop-wip is where the publisher pushes the parts one by one before drop.
+        run: |
+          git push origin --delete drop
+          git push origin --delete drop-wip || true
