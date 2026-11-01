@@ -1,0 +1,58 @@
+# Publishes the builds anyone downloads. The private NovaOS repository pushes
+# them to the branch `drop` (big files cut into parts below GitHub's 100 MB
+# limit); this job puts each one into its release here and deletes the branch.
+#
+# drop/<tag>/release.json   {"name": …, "body": …, "prerelease": bool, "latest": bool}
+# drop/<tag>/<file>.part-*  the parts of <file>, in name order
+# drop/<tag>/SHA256SUMS     sums of the whole files: a file that does not match is not published
+name: Publish builds
+
+on:
+  push:
+    branches: [drop]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: drop
+      - name: Put the builds into their releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -eu
+          for dir in drop/*/; do
+            tag=$(basename "$dir")
+            out="$RUNNER_TEMP/$tag"; mkdir -p "$out"
+            for first in "$dir"*.part-000; do
+              [ -e "$first" ] || continue
+              name=$(basename "$first" .part-000)
+              cat "$dir$name".part-* > "$out/$name"
+            done
+            (cd "$out" && sha256sum -c "$GITHUB_WORKSPACE/${dir}SHA256SUMS")
+            meta="${dir}release.json"
+            title=$(jq -r .name "$meta"); jq -r .body "$meta" > "$RUNNER_TEMP/notes-$tag"
+            pre=$(jq -r .prerelease "$meta"); latest=$(jq -r .latest "$meta")
+            if gh release view "$tag" >/dev/null 2>&1; then
+              for old in $(gh release view "$tag" --json assets -q '.assets[].name'); do
+                [ -e "$out/$old" ] || gh release delete-asset "$tag" "$old" -y
+              done
+              gh release edit "$tag" --title "$title" --notes-file "$RUNNER_TEMP/notes-$tag" --prerelease="$pre" --latest="$latest"
+              gh release upload "$tag" "$out"/* --clobber
+            else
+              gh release create "$tag" "$out"/* --target main --title "$title" --notes-file "$RUNNER_TEMP/notes-$tag" --prerelease="$pre" --latest="$latest"
+            fi
+          done
+      - name: Delete the drop branch
+        run: git push origin --delete drop
