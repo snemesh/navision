@@ -1,19 +1,20 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Navision</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Navision — Ubuntu, которой управляет AI. Помощник на вашей подписке Claude Code или Codex. Установка одной командой и Remote Navision для Mac.">
+<meta name="description" content="Navision, first public beta: Ubuntu run by AI. An assistant on your own Claude Code or Codex subscription. One-command install and Remote Navision for Mac.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath fill=%27%237C5CFF%27 d=%27M12 3c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: the page sits on Navision's own satin wallpaper. Glass the way the shell draws it
-   (blurred body, lit rim, inner sheen, two-step shadow) carries a centered hero, real
-   screenshots as the main material, a Mac window for Remote Navision and a glass footer.
-   Colors, radii and type come from design/tokens.json. */
+/* Layout: the page sits on Navision's own satin wallpaper. Real screenshots are the main
+   material and carry no frame: their edges melt into the wallpaper they were taken on.
+   Glass the way the shell draws it (blurred body, lit rim, inner sheen, two-step shadow)
+   is kept for the nav, feature tiles, download cards and footer. Text comes in English,
+   Ukrainian and Slovak (the script at the end). Colors, radii and type: design/tokens.json. */
 :root{
   --font-ui:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
@@ -29,6 +30,7 @@
   --violet:#7C5CFF; --sky:#36C9F0; --btn-top:#7F97F8; --btn-base:#4B5DDF;
   --term:rgba(26,28,48,.86); --term-text:#E6E8F7; --term-dim:#8E93B5;
   --chip:rgba(27,29,46,.06);
+  --ink:#5B3FE0; --night:#17153B;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --wall-img:url("shots/wall-dark.webp"); --wall:#1A1740;
@@ -41,6 +43,7 @@
   --line:rgba(255,255,255,.09);
   --term:rgba(10,11,22,.82); --term-text:#E6E8F7; --term-dim:#7C82A6;
   --chip:rgba(255,255,255,.07);
+  --ink:#C3B4FF; --night:transparent;
   color-scheme:dark;
 }}
 :root[data-theme="dark"]{
@@ -54,6 +57,7 @@
   --line:rgba(255,255,255,.09);
   --term:rgba(10,11,22,.82); --term-text:#E6E8F7; --term-dim:#7C82A6;
   --chip:rgba(255,255,255,.07);
+  --ink:#C3B4FF; --night:transparent;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -115,25 +119,25 @@ h2{font-size:clamp(34px,4.6vw,56px);line-height:1.04;font-weight:700;letter-spac
 .hero .tag span{color:var(--text2)}
 .hero .lede{max-width:36em;margin:18px auto 0}
 .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px}
-.stage{margin:72px auto 0;max-width:1120px;perspective:1600px}
-.stage .frame{border-radius:22px;padding:8px;transform-origin:50% 0}
-.stage img{border-radius:15px;width:100%;height:auto;box-shadow:0 0 0 1px var(--edge)}
+.stage{margin:40px auto 0;max-width:1280px;perspective:1600px}
+.stage picture{display:block;transform-origin:50% 0}
+.stage img{width:100%;height:auto}
 @supports (animation-timeline: view()){
-  .stage .frame{animation:settle linear both;animation-timeline:view();animation-range:entry 0% cover 45%}
-  @keyframes settle{from{transform:rotateX(14deg) scale(.94)}to{transform:none}}
+  .stage picture{animation:settle linear both;animation-timeline:view();animation-range:entry 0% cover 45%}
+  @keyframes settle{from{transform:rotateX(12deg) scale(.95)}to{transform:none}}
 }
 
 /* Sections */
 section{padding-block:144px 0}
 .center{text-align:center;max-width:780px;margin:0 auto;display:grid;gap:18px;justify-items:center}
-.panel{border-radius:32px;padding:clamp(28px,5vw,64px)}
 .duo{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,64px);align-items:center}
 .duo.flip{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
 .duo.flip .copy{order:2}
 @media (max-width:920px){.duo,.duo.flip{grid-template-columns:minmax(0,1fr)}.duo.flip .copy{order:0}}
 .copy{display:grid;gap:20px;min-width:0;align-content:center}
-.pic{border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px var(--edge),0 30px 70px var(--drop);min-width:0}
+.pic{margin:0 -5%;min-width:0}
 .pic img{width:100%;height:auto}
+@media (max-width:920px){.pic{margin:0 -20px}}
 .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px;margin-top:8px}
 @media (max-width:520px){.facts{grid-template-columns:minmax(0,1fr)}}
 .fact{display:grid;gap:4px}
@@ -154,16 +158,18 @@ section{padding-block:144px 0}
 .g-slate{background:linear-gradient(180deg,#B9BED3,#7D839F)} .g-violet{background:linear-gradient(180deg,#A68AF7,#7A4AE6)}
 .g-emerald{background:linear-gradient(180deg,#3FD0A4,#02A37D)} .g-rose{background:linear-gradient(180deg,#F4A3C4,#D6588E)}
 .g-indigo{background:linear-gradient(180deg,#7F97F8,#4B5DDF)} .g-peach{background:linear-gradient(180deg,#F2B8A0,#D9805F)}
-.wide{margin-top:56px;border-radius:22px;padding:8px}
-.wide img{border-radius:15px;width:100%;height:auto}
+.wide{margin:32px -3% 0}
+.wide img{width:100%;height:auto}
 
-/* Remote Navision: a Mac window with the shell inside. */
-.mac{border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.25),0 40px 90px rgba(10,8,40,.45);background:#1E2036;min-width:0}
-.mac .title{height:34px;display:flex;align-items:center;gap:8px;padding:0 14px;background:linear-gradient(180deg,#2C2E48,#232540);border-bottom:1px solid rgba(0,0,0,.35)}
-.mac .title i{width:12px;height:12px;border-radius:50%;flex:none}
-.mac .title i:nth-child(1){background:#FF5F57}.mac .title i:nth-child(2){background:#FEBC2E}.mac .title i:nth-child(3){background:#28C840}
-.mac .title span{flex:1;text-align:center;font-size:12.5px;color:#B8BCD6;margin-right:52px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mac img{width:100%;height:auto}
+/* Screenshots melt into the page: no frame, every edge fades into the wallpaper.
+   --mx side fade, --mt top fade ends, --mb bottom fade starts. */
+.melt{--mx:11%;--mt:7%;--mb:76%;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--mx),#000 calc(100% - var(--mx)),transparent),linear-gradient(180deg,transparent,#000 var(--mt),#000 var(--mb),transparent);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,#000 var(--mx),#000 calc(100% - var(--mx)),transparent),linear-gradient(180deg,transparent,#000 var(--mt),#000 var(--mb),transparent);
+  mask-composite:intersect}
+.stage .melt{--mx:13%;--mt:3%;--mb:64%}
+.remote-shot{--mb:70%}
 .trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:48px;border-top:1px solid var(--line)}
 @media (max-width:760px){.trio{grid-template-columns:minmax(0,1fr)}}
 .trio div{padding:24px 24px 0 0;display:grid;gap:6px}
@@ -173,6 +179,38 @@ section{padding-block:144px 0}
 .trio span{font-size:14px;line-height:1.55;color:var(--text2)}
 .pill{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:999px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:var(--text2);background:var(--chip);box-shadow:inset 0 0 0 1px var(--line)}
 .pill i{width:7px;height:7px;border-radius:50%;background:#E8A33D;box-shadow:0 0 0 3px rgba(232,163,61,.22)}
+
+.pill.beta{height:32px;padding:0 15px;font-size:12.5px;color:var(--ink);background:rgba(124,92,255,.12);box-shadow:inset 0 0 0 1px rgba(124,92,255,.30)}
+.pill.beta i{background:var(--violet);box-shadow:0 0 0 3px rgba(124,92,255,.25)}
+
+/* Night band: on the light page the dark screenshots sit in a band of the dark wallpaper
+   that fades in and out, so they melt into it too. In the dark theme it is invisible. */
+.night{position:relative;isolation:isolate;color:var(--text);padding-bottom:320px;margin-top:40px;
+  --text:#ECEEFA; --text2:#A3A8C3; --text3:#757A98;
+  --glass:rgba(22,24,44,.46); --glass-2:rgba(32,34,58,.72); --sheen:rgba(255,255,255,.07);
+  --rim:rgba(255,255,255,.38); --rim-low:rgba(255,255,255,.05); --edge:rgba(0,0,0,.35);
+  --drop:rgba(0,0,0,.45); --drop-2:rgba(0,0,0,.30); --line:rgba(255,255,255,.09);
+  --chip:rgba(255,255,255,.07); --ink:#C3B4FF}
+.night::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 55% 30% at 15% 22%,rgba(76,92,240,.34),transparent 70%),
+    radial-gradient(ellipse 50% 28% at 88% 58%,rgba(160,90,240,.28),transparent 70%),
+    radial-gradient(ellipse 60% 25% at 30% 86%,rgba(60,120,240,.22),transparent 70%),var(--night);
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 280px,#000 calc(100% - 280px),transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 280px,#000 calc(100% - 280px),transparent)}
+.night > section:first-child{padding-top:300px}
+.night + section{padding-top:24px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .night::before{background:none}}
+:root[data-theme="dark"] .night::before{background:none}
+.betanote{margin-top:18px;font-size:14px;color:var(--text2)}
+.betanote a{color:var(--ink);text-decoration:none;font-weight:500}
+.betanote a:hover{text-decoration:underline}
+
+/* Language switch in the nav capsule */
+.langs{display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--chip);margin-right:4px}
+.langs button{border:0;background:none;cursor:pointer;font:600 12px/1 var(--font-ui);letter-spacing:.04em;color:var(--text2);height:30px;min-width:34px;padding:0 8px;border-radius:999px}
+.langs button:hover{color:var(--text)}
+.langs button[aria-pressed="true"]{color:var(--text);background:var(--glass-2);box-shadow:inset 0 1px 0 var(--rim),0 2px 6px var(--drop-2)}
+@media (max-width:400px){.mark span{display:none}}
 
 /* Download */
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:64px;text-align:left}
@@ -193,7 +231,7 @@ section{padding-block:144px 0}
 .term pre i{font-style:normal;color:#7FDDB3;user-select:none}
 .notes{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:10px;font-size:14px;line-height:1.55;color:var(--text2)}
 .notes code{font:12.5px var(--font-mono);color:var(--text);background:var(--chip);padding:2px 7px;border-radius:6px;overflow-wrap:anywhere}
-.notes a,.doc a{color:var(--violet);text-decoration:none;font-weight:500}
+.notes a,.doc a{color:var(--ink);text-decoration:none;font-weight:500}
 .notes a:hover,.doc a:hover{text-decoration:underline}
 .doc{font-size:13.5px;color:var(--text3)}
 
@@ -214,156 +252,153 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
 .col a:hover{color:var(--text)}
 .foot .bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:var(--text3)}
 </style>
-</head>
 <body>
 <div class="wall" aria-hidden="true"></div>
 
 <header class="nav">
   <div class="bar glass">
-    <a class="mark" href="#top"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z"/></svg></i>Navision</a>
-    <nav class="links" aria-label="Разделы">
-      <a href="#assistant">Помощник</a>
-      <a href="#features">Возможности</a>
+    <a class="mark" href="#top"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z"/></svg></i><span>Navision</span></a>
+    <nav class="links" aria-label="Sections" data-tl="n_sections">
+      <a href="#assistant" data-t="n_assist">Assistant</a>
+      <a href="#features" data-t="n_feat">Features</a>
       <a href="#remote">Remote Navision</a>
       <a href="https://github.com/snemesh/navision">GitHub</a>
     </nav>
-    <a class="btn pri sm" href="#download">Скачать</a>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-l="en" lang="en" aria-pressed="true" title="English">EN</button>
+      <button type="button" data-l="uk" lang="uk" aria-pressed="false" title="Українська">UA</button>
+      <button type="button" data-l="sk" lang="sk" aria-pressed="false" title="Slovenčina">SK</button>
+    </div>
+    <a class="btn pri sm" href="#download" data-t="n_dl">Download</a>
   </div>
 </header>
 
 <main id="top">
   <div class="hero">
     <div class="wrap">
-      <div class="eyebrow">Оболочка для Ubuntu · AI в основе</div>
+      <span class="pill beta"><i></i><span data-t="beta">Beta 1 · first public beta</span></span>
       <h1>Navision</h1>
-      <p class="tag">Ubuntu, которой управляет AI. <span>Ваш агент видит и делает то же, что и вы.</span></p>
-      <p class="lede">Помощник на вашей подписке Claude Code или Codex пишет код и ведёт систему. Свой компоновщик Wayland на Rust, матовое стекло и ничего лишнего в фоне.</p>
+      <p class="tag" data-t="tag">Ubuntu, run by AI. <span>Your agent sees and does what you do.</span></p>
+      <p class="lede" data-t="lede">An assistant on your own Claude Code or Codex subscription writes code and runs the system. Its own Wayland compositor in Rust, frosted glass and nothing wasted in the background.</p>
       <div class="cta">
-        <a class="btn pri" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Установить на Ubuntu</a>
-        <a class="btn ghost" href="#remote">Remote Navision для Mac</a>
+        <a class="btn pri" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg><span data-t="cta1">Install on Ubuntu</span></a>
+        <a class="btn ghost" href="#remote" data-t="cta2">Remote Navision for Mac</a>
       </div>
+      <p class="betanote" data-t="betanote">This is the first beta: some things may not work yet. <a href="https://github.com/snemesh/navision/issues">Tell us what broke</a></p>
     </div>
     <div class="wrap stage">
-      <div class="frame glass">
-        <picture>
-          <source srcset="shots/desk-dark.webp" media="(prefers-color-scheme: dark)">
-          <img src="shots/desk-light.webp" width="1600" height="900" alt="Стол Navision: верхняя панель, окно Настроек с приветствием первого входа и Док внизу">
-        </picture>
-      </div>
+      <picture class="melt">
+        <source srcset="shots/desk-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="shots/desk-light.webp" width="1600" height="900" alt="The Navision desktop: top bar, Settings with the first-run welcome, and the Dock" data-ta="a_desk">
+      </picture>
     </div>
   </div>
 
   <section id="assistant">
-    <div class="wrap">
-      <div class="panel glass duo">
-        <div class="copy">
-          <div class="eyebrow">Помощник</div>
-          <h2>Claude Code в окне, а не в терминале</h2>
-          <p class="lede">Чат с проектами и историей. Работу делает официальный CLI вашего агента, поэтому подписка работает как есть.</p>
-          <div class="facts">
-            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Любой агент</b><span>Claude Code, Codex, OpenCode, Gemini CLI. Несколько подписок сразу.</span></div>
-            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Ведёт Ubuntu</b><span>«Поставь Docker», «что грузит сервер». Чат и есть интерфейс.</span></div>
-            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Диспетчер</b><span>Раздаёт задачи агентам и повторяет дела по расписанию.</span></div>
-            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Не зависит от окна</b><span>Закрыли окно, агенты продолжают работать в фоне.</span></div>
-          </div>
+    <div class="wrap duo">
+      <div class="copy">
+        <div class="eyebrow" data-t="as_eb">Assistant</div>
+        <h2 data-t="as_h">Claude Code in a window, not a terminal</h2>
+        <p class="lede" data-t="as_l">Chat with projects and history. The work is done by your agent's official CLI, so your subscription works as it is.</p>
+        <div class="facts">
+          <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span data-t="f1">Any agent</span></b><span data-t="f1d">Claude Code, Codex, OpenCode, Gemini CLI. Several subscriptions at once.</span></div>
+          <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/></svg><span data-t="f2">Runs Ubuntu</span></b><span data-t="f2d">“Install Docker”, “what is loading the server”. The chat is the interface.</span></div>
+          <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-t="f3">Dispatcher</span></b><span data-t="f3d">Hands tasks to agents and repeats jobs on a schedule.</span></div>
+          <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg><span data-t="f4">Outlives the window</span></b><span data-t="f4d">Close the window and the agents keep working in the background.</span></div>
         </div>
-        <figure class="pic" style="margin:0"><img src="shots/brain-light.webp" width="1401" height="856" alt="Окно «Помощник»: проекты слева, ответ со ссылками на запись экрана" loading="lazy"></figure>
       </div>
+      <figure class="pic melt"><img src="shots/brain-light.webp" width="1401" height="856" alt="The Assistant window: projects on the left, an answer with links to a screen recording" data-ta="a_brain" loading="lazy"></figure>
     </div>
   </section>
 
+  <div class="night">
   <section>
-    <div class="wrap">
-      <div class="panel glass duo flip">
-        <div class="copy">
-          <div class="eyebrow">Агенты и root</div>
-          <h2>Систему можно доверить агенту</h2>
-          <p class="lede">Команда агента от root проходит через окно пароля, где она видна целиком. Пароль проверяет polkit, процессы пользователя его не видят.</p>
-          <div class="facts">
-            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg>Своя модель</b><span>Локальная LLM по адресу и ключу, через API Anthropic или OpenAI.</span></div>
-            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg>Песочница</b><span>Агент работает в своей папке и выходит наружу только через явные двери.</span></div>
-          </div>
+    <div class="wrap duo flip">
+      <div class="copy">
+        <div class="eyebrow" data-t="ag_eb">Agents and root</div>
+        <h2 data-t="ag_h">An agent you can trust with the system</h2>
+        <p class="lede" data-t="ag_l">Every root command from an agent goes through a password window that shows it in full. polkit checks the password, and user processes never see it.</p>
+        <div class="facts">
+          <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg><span data-t="f5">Your own model</span></b><span data-t="f5d">A local LLM by address and key, through the Anthropic or OpenAI API.</span></div>
+          <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg><span data-t="f6">Sandbox</span></b><span data-t="f6d">The agent works in its own folder and reaches outside only through doors you open.</span></div>
         </div>
-        <figure class="pic" style="margin:0"><img src="shots/agents-dark.webp" width="1301" height="856" alt="Помощник, раздел «Агенты и дела»: свой сервер Local agent и дело «Искать баги»" loading="lazy"></figure>
       </div>
+      <figure class="pic melt"><img src="shots/agents-dark.webp" width="1301" height="856" alt="Assistant, Agents and jobs: a Local agent server and a “Hunt for bugs” job" data-ta="a_agents" loading="lazy"></figure>
     </div>
   </section>
 
   <section id="features">
     <div class="wrap">
       <div class="center">
-        <div class="eyebrow">Возможности</div>
-        <h2>Целая система, а не тема оформления</h2>
-        <p class="lede">Док и Quick Look как в macOS, раскладки окон как в Windows. Каждое действие мыши — команда, которую агент вызывает с тем же результатом.</p>
+        <div class="eyebrow" data-t="fe_eb">Features</div>
+        <h2 data-t="fe_h">A whole system, not a theme</h2>
+        <p class="lede" data-t="fe_l">A Dock and Quick Look like macOS, window snapping like Windows. Every mouse action is a command an agent can call with the same result.</p>
       </div>
-      <div class="wide glass"><img src="shots/monitor.webp" width="1600" height="900" alt="Мониторинг Navision: процессор, память, сеть, диски, самые занятые программы и журнал" loading="lazy"></div>
+      <div class="wide melt"><img src="shots/monitor.webp" width="1600" height="900" alt="Navision Monitoring: CPU, memory, network, disks, the busiest programs and the log" data-ta="a_mon" loading="lazy"></div>
       <div class="tiles">
-        <article class="tile glass"><div class="sq g-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3>Голос</h3><p>Диктовка в любое поле, чтение ответов вслух и разговор с помощником без рук.</p></article>
-        <article class="tile glass"><div class="sq g-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div><h3>Мониторинг</h3><p>Процессор, память, диски, сеть и самые занятые программы на одном экране и в виджетах на столе.</p></article>
-        <article class="tile glass"><div class="sq g-slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 4 4-4 4M12 16h7"/></svg></div><h3>Терминал</h3><p>Вкладки по ⌘T, которые перетаскиваются между окнами, и кликабельные ссылки и пути.</p></article>
-        <article class="tile glass"><div class="sq g-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h7l-1 7 9-11h-7z"/></svg></div><h3>Плавно и экономно</h3><p>Кадр рисуется только при изменениях и по vblank. Простой стол спит.</p></article>
-        <article class="tile glass"><div class="sq g-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Падение не теряет работу</h3><p>Компоновщик поднимается сам, а программы и терминалы остаются на месте.</p></article>
-        <article class="tile glass"><div class="sq g-rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M16 12h.01M18 14h.01"/></svg></div><h3>Программы и игры</h3><p>Chrome, Claude Desktop, Steam с игровым режимом, Wine и X11 через Xwayland.</p></article>
+        <article class="tile glass"><div class="sq g-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3 data-t="t1">Voice</h3><p data-t="t1d">Dictation into any field, answers read aloud and hands-free conversation with the assistant.</p></article>
+        <article class="tile glass"><div class="sq g-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div><h3 data-t="t2">Monitoring</h3><p data-t="t2d">CPU, memory, disks, network and the busiest programs on one screen and in desktop widgets.</p></article>
+        <article class="tile glass"><div class="sq g-slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 4 4-4 4M12 16h7"/></svg></div><h3 data-t="t3">Terminal</h3><p data-t="t3d">Tabs on ⌘T that drag between windows, with clickable links and paths.</p></article>
+        <article class="tile glass"><div class="sq g-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h7l-1 7 9-11h-7z"/></svg></div><h3 data-t="t4">Smooth and frugal</h3><p data-t="t4d">A frame is drawn only when something changes, and on vblank. An idle desktop sleeps.</p></article>
+        <article class="tile glass"><div class="sq g-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div><h3 data-t="t5">A crash loses nothing</h3><p data-t="t5d">The compositor comes back by itself, and programs and terminals stay where they were.</p></article>
+        <article class="tile glass"><div class="sq g-rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M16 12h.01M18 14h.01"/></svg></div><h3 data-t="t6">Apps and games</h3><p data-t="t6d">Chrome, Claude Desktop, Steam with game mode, Wine and X11 through Xwayland.</p></article>
       </div>
     </div>
   </section>
 
   <section id="remote">
     <div class="wrap">
-      <div class="panel glass">
-        <div class="duo">
-          <div class="copy">
-            <span class="pill"><i></i>Предварительная версия</span>
-            <h2>Remote Navision</h2>
-            <p class="lede">Navision на сервере Ubuntu без видеокарты, а весь интерфейс рисует ваш Mac. Док, окна, меню и анимации отвечают сразу, даже через сеть: с сервера приходит только то, что изменилось.</p>
-            <div><a class="btn pri" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Скачать для Mac</a></div>
-          </div>
-          <div class="mac">
-            <div class="title"><i></i><i></i><i></i><span>Remote Navision — сервер Ubuntu</span></div>
-            <img src="shots/desk-dark.webp" width="1600" height="900" alt="Стол Navision внутри окна Remote Navision на Mac" loading="lazy">
-          </div>
+      <div class="duo">
+        <div class="copy">
+          <span class="pill"><i></i><span data-t="re_pill">Preview</span></span>
+          <h2>Remote Navision</h2>
+          <p class="lede" data-t="re_l">Navision runs on an Ubuntu server without a graphics card, and your Mac draws the whole interface. The Dock, windows, menus and animations respond instantly, even over the network: the server sends only what changed.</p>
+          <div><a class="btn pri" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg><span data-t="re_btn">Download for Mac</span></a></div>
         </div>
-        <div class="trio">
-          <div><b>Сервер без видеокарты</b><span>Программы, агенты и службы работают на сервере. Ему не нужен ни GPU, ни монитор.</span></div>
-          <div><b>Рисует Mac</b><span>Клиент рисует Navision один в один на Metal, со звуком и общим буфером обмена.</span></div>
-          <div><b>Вход по ключу SSH</b><span>Как обычный ssh: без паролей, к любому числу серверов из одного клиента.</span></div>
-        </div>
+        <figure class="pic melt remote-shot"><img src="shots/desk-dark.webp" width="1600" height="900" alt="The Navision desktop drawn by Remote Navision on a Mac" data-ta="a_remote"></figure>
+      </div>
+      <div class="trio">
+        <div><b data-t="r1">No GPU on the server</b><span data-t="r1d">Programs, agents and services run on the server. It needs neither a GPU nor a monitor.</span></div>
+        <div><b data-t="r2">Your Mac draws it</b><span data-t="r2d">The client draws Navision exactly as it looks, with Metal, sound and a shared clipboard.</span></div>
+        <div><b data-t="r3">SSH key sign-in</b><span data-t="r3d">Like plain ssh: no passwords, any number of servers from one client.</span></div>
       </div>
     </div>
   </section>
 
+  </div>
+
   <section id="download">
     <div class="wrap">
       <div class="center">
-        <div class="eyebrow">Скачать</div>
-        <h2>Свежая сборка после каждого изменения</h2>
-        <p class="lede">Обе сборки собирает и публикует CI, когда изменение прошло все проверки.</p>
+        <div class="eyebrow" data-t="dl_eb">Download · Beta 1</div>
+        <h2 data-t="dl_h">The first beta, rebuilt after every change</h2>
+        <p class="lede" data-t="dl_l">CI builds both downloads from changes that passed every check.</p>
       </div>
       <div class="cards">
         <article class="card glass">
           <div class="head"><div class="sq g-peach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v6.5M4.2 16.5l5.6-3.2M19.8 16.5l-5.6-3.2"/></svg></div>
-            <div><h3>Navision для Ubuntu</h3><div class="meta">UBUNTU 26.04 · X86_64</div></div></div>
-          <p>Одна команда в терминале. Установщик сам поставит пакеты, драйвер NVIDIA, если он нужен, службы и вход. Вам останется войти и ввести свои ключи.</p>
+            <div><h3 data-t="c1">Navision for Ubuntu</h3><div class="meta">BETA 1 · UBUNTU 26.04 · X86_64</div></div></div>
+          <p data-t="c1d">One command in a terminal. The installer sets up packages, the NVIDIA driver if you need it, services and sign-in. All that is left is to sign in and enter your keys.</p>
           <div class="term">
-            <div class="tbar"><span class="tab">Терминал</span><button class="copybtn" id="copy" type="button">Копировать</button></div>
+            <div class="tbar"><span class="tab" data-t="term">Terminal</span><button class="copybtn" id="copy" type="button" data-t="copy">Copy</button></div>
             <pre id="cmd"><i>$ </i>curl -fsSL https://github.com/snemesh/navision/releases/download/latest-main/install.sh | sh</pre>
           </div>
           <ul class="notes">
-            <li>Повторный запуск той же команды обновляет систему.</li>
-            <li>Без интернета: <a href="https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz">архив, 177 МБ</a> и <a href="https://github.com/snemesh/navision/releases/download/latest-main/install.sh">install.sh</a>, затем <code>sh install.sh --file novaos-x86_64.tar.gz</code></li>
+            <li data-t="c1n1">Running the same command again updates the system.</li>
+            <li data-t="c1n2">Offline: <a href="https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz">the archive, 177 MB</a> and <a href="https://github.com/snemesh/navision/releases/download/latest-main/install.sh">install.sh</a>, then <code>sh install.sh --file novaos-x86_64.tar.gz</code></li>
           </ul>
-          <p class="doc">Что делает установщик и как удалить: <a href="https://github.com/snemesh/navision#установка-на-ubuntu">подробнее</a></p>
+          <p class="doc" data-t="c1doc">What the installer does and how to remove it: <a href="https://github.com/snemesh/navision#install-on-ubuntu">details</a></p>
         </article>
         <article class="card glass">
           <div class="head"><div class="sq g-indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
-            <div><h3>Remote Navision</h3><div class="meta">MACOS · APPLE SILICON · 15 МБ</div></div></div>
-          <p>Откройте dmg и перетащите Remote Navision в «Программы». Сборка не нотаризована, поэтому первый запуск — правой кнопкой и «Открыть».</p>
-          <div><a class="btn pri" href="https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Скачать RemoteNavision.dmg</a></div>
+            <div><h3>Remote Navision</h3><div class="meta" data-t="c2m">PREVIEW · MACOS · APPLE SILICON · 15 MB</div></div></div>
+          <p data-t="c2d">Open the dmg and drag Remote Navision to Applications. The build is not notarized, so the first time open it with a right-click and Open.</p>
+          <div><a class="btn pri" href="https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg><span data-t="c2btn">Download RemoteNavision.dmg</span></a></div>
           <ul class="notes">
-            <li>На сервере нужна Navision с <code>nova-remote</code>, вход по ключу SSH без пароля и открытые порты UDP 60100–60199.</li>
-            <li>Если macOS не открывает: <code>xattr -dr com.apple.quarantine "/Applications/Remote Navision.app"</code></li>
+            <li data-t="c2n1">The server needs Navision with <code>nova-remote</code>, passwordless SSH key sign-in and UDP ports 60100–60199 open.</li>
+            <li><span data-t="c2n2">If macOS will not open it:</span> <code>xattr -dr com.apple.quarantine "/Applications/Remote Navision.app"</code></li>
           </ul>
-          <p class="doc">Как подключиться к серверу: <a href="https://github.com/snemesh/navision#remote-navision-для-mac">подробнее</a></p>
+          <p class="doc" data-t="c2doc">How to connect to a server: <a href="https://github.com/snemesh/navision#remote-navision-for-mac">details</a></p>
         </article>
       </div>
     </div>
@@ -376,26 +411,168 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
       <div class="top">
         <div class="brand">
           <a class="mark" href="#top"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z"/></svg></i>Navision</a>
-          <p>Ubuntu, которой управляет AI. Свежие сборки для Ubuntu и macOS после каждого изменения.</p>
-          <div class="row"><a class="btn pri sm" href="#download">Скачать</a><a class="btn ghost sm" href="https://github.com/snemesh/navision">Navision на GitHub</a></div>
+          <p data-t="fo_p">Ubuntu, run by AI. The first public beta, for Ubuntu and macOS.</p>
+          <div class="row"><a class="btn pri sm" href="#download" data-t="n_dl">Download</a><a class="btn ghost sm" href="https://github.com/snemesh/navision" data-t="fo_gh">Navision on GitHub</a></div>
         </div>
-        <nav class="col" aria-label="Продукт"><h4>Продукт</h4><a href="#assistant">Помощник</a><a href="#features">Возможности</a><a href="#remote">Remote Navision</a><a href="#download">Скачать</a></nav>
-        <nav class="col" aria-label="Установка"><h4>Установка</h4><a href="https://github.com/snemesh/navision#установка-на-ubuntu">Ubuntu</a><a href="https://github.com/snemesh/navision#remote-navision-для-mac">Remote Navision</a><a href="https://github.com/snemesh/navision#без-интернета">Без интернета</a><a href="https://github.com/snemesh/navision#удалить">Удалить</a></nav>
-        <nav class="col" aria-label="Проект"><h4>Проект</h4><a href="https://github.com/snemesh/navision">GitHub</a><a href="https://github.com/snemesh/navision/releases">Все сборки</a><a href="https://github.com/snemesh/navision/issues">Сообщить об ошибке</a></nav>
+        <nav class="col" aria-label="Product" data-tl="fo_prod"><h4 data-t="fo_prod">Product</h4><a href="#assistant" data-t="n_assist">Assistant</a><a href="#features" data-t="n_feat">Features</a><a href="#remote">Remote Navision</a><a href="#download" data-t="n_dl">Download</a></nav>
+        <nav class="col" aria-label="Install" data-tl="fo_inst"><h4 data-t="fo_inst">Install</h4><a href="https://github.com/snemesh/navision#install-on-ubuntu">Ubuntu</a><a href="https://github.com/snemesh/navision#remote-navision-for-mac">Remote Navision</a><a href="https://github.com/snemesh/navision#offline" data-t="fo_off">Offline</a><a href="https://github.com/snemesh/navision#uninstall" data-t="fo_rm">Uninstall</a></nav>
+        <nav class="col" aria-label="Project" data-tl="fo_proj"><h4 data-t="fo_proj">Project</h4><a href="https://github.com/snemesh/navision">GitHub</a><a href="https://github.com/snemesh/navision/releases" data-t="fo_rel">All builds</a><a href="https://github.com/snemesh/navision/issues" data-t="fo_bug">Report a bug</a></nav>
       </div>
-      <div class="bottom"><span>Navision</span><span>Пишется вместе с агентами Claude Code</span></div>
+      <div class="bottom"><span>Navision · Beta 1</span><span data-t="fo_made">Built together with Claude Code agents</span></div>
     </div>
   </div>
 </footer>
 
 <script>
+/* Languages: the page is written in English; Ukrainian and Slovak replace the marked texts.
+   The choice comes from ?lang=, then the last pick, then the browser's languages. */
 (function(){
-  var btn=document.getElementById('copy'),cmd=document.getElementById('cmd');
-  var text=cmd.textContent.replace(/^\$ /,'');
-  btn.addEventListener('click',function(){
-    function done(t){btn.textContent=t;setTimeout(function(){btn.textContent='Копировать'},1600)}
-    function pick(){var r=document.createRange();r.selectNodeContents(cmd);var s=getSelection();s.removeAllRanges();s.addRange(r);done('Выделено')}
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done('Скопировано')},pick)}else pick();
+  var T={
+  uk:{
+    title:"Navision",
+    n_sections:"Розділи",n_assist:"Помічник",n_feat:"Можливості",n_dl:"Завантажити",
+    beta:"Beta 1 · перша публічна бета",
+    tag:"Ubuntu, якою керує AI. <span>Ваш агент бачить і робить те саме, що й ви.</span>",
+    lede:"Помічник на вашій підписці Claude Code або Codex пише код і керує системою. Власний компонувальник Wayland на Rust, матове скло й нічого зайвого у фоні.",
+    cta1:"Встановити на Ubuntu",cta2:"Remote Navision для Mac",
+    betanote:'Це перша бета: дещо може ще не працювати. <a href="https://github.com/snemesh/navision/issues">Розкажіть, що зламалося</a>',
+    a_desk:"Робочий стіл Navision: верхня панель, Налаштування з привітанням першого входу і Док",
+    as_eb:"Помічник",as_h:"Claude Code у вікні, а не в терміналі",
+    as_l:"Чат із проєктами та історією. Роботу виконує офіційний CLI вашого агента, тож підписка працює як є.",
+    f1:"Будь-який агент",f1d:"Claude Code, Codex, OpenCode, Gemini CLI. Кілька підписок одночасно.",
+    f2:"Керує Ubuntu",f2d:"«Встанови Docker», «що навантажує сервер». Чат і є інтерфейс.",
+    f3:"Диспетчер",f3d:"Роздає завдання агентам і повторює справи за розкладом.",
+    f4:"Не залежить від вікна",f4d:"Закрили вікно, а агенти працюють далі у фоні.",
+    a_brain:"Вікно «Помічник»: проєкти ліворуч, відповідь із посиланнями на запис екрана",
+    ag_eb:"Агенти і root",ag_h:"Систему можна довірити агенту",
+    ag_l:"Кожна команда агента від root проходить через вікно пароля, де її видно повністю. Пароль перевіряє polkit, а процеси користувача його не бачать.",
+    f5:"Своя модель",f5d:"Локальна LLM за адресою та ключем, через API Anthropic або OpenAI.",
+    f6:"Пісочниця",f6d:"Агент працює у своїй теці й виходить назовні лише через двері, які відчинили ви.",
+    a_agents:"Помічник, розділ «Агенти і справи»: свій сервер Local agent і справа «Шукати баги»",
+    fe_eb:"Можливості",fe_h:"Ціла система, а не тема оформлення",
+    fe_l:"Док і Quick Look як у macOS, розкладки вікон як у Windows. Кожна дія мишею — команда, яку агент викликає з тим самим результатом.",
+    a_mon:"Моніторинг Navision: процесор, пам'ять, мережа, диски, найзайнятіші програми та журнал",
+    t1:"Голос",t1d:"Диктування в будь-яке поле, читання відповідей уголос і розмова з помічником без рук.",
+    t2:"Моніторинг",t2d:"Процесор, пам'ять, диски, мережа й найзайнятіші програми на одному екрані та у віджетах на столі.",
+    t3:"Термінал",t3d:"Вкладки за ⌘T, які перетягуються між вікнами, і клікабельні посилання та шляхи.",
+    t4:"Плавно й економно",t4d:"Кадр малюється лише тоді, коли щось змінилося, і за vblank. Стіл без справ спить.",
+    t5:"Падіння не втрачає роботу",t5d:"Компонувальник піднімається сам, а програми й термінали лишаються на місці.",
+    t6:"Програми та ігри",t6d:"Chrome, Claude Desktop, Steam з ігровим режимом, Wine та X11 через Xwayland.",
+    re_pill:"Попередня версія",
+    re_l:"Navision працює на сервері Ubuntu без відеокарти, а весь інтерфейс малює ваш Mac. Док, вікна, меню й анімації відповідають одразу, навіть через мережу: із сервера приходить лише те, що змінилося.",
+    re_btn:"Завантажити для Mac",
+    a_remote:"Робочий стіл Navision, який малює Remote Navision на Mac",
+    r1:"Сервер без відеокарти",r1d:"Програми, агенти й служби працюють на сервері. Йому не потрібні ні GPU, ні монітор.",
+    r2:"Малює ваш Mac",r2d:"Клієнт малює Navision точно таким, яким він є, на Metal, зі звуком і спільним буфером обміну.",
+    r3:"Вхід за ключем SSH",r3d:"Як звичайний ssh: без паролів, до будь-якої кількості серверів з одного клієнта.",
+    dl_eb:"Завантажити · Beta 1",dl_h:"Перша бета, свіжа збірка після кожної зміни",
+    dl_l:"Обидві збірки робить CI зі змін, які пройшли всі перевірки.",
+    c1:"Navision для Ubuntu",
+    c1d:"Одна команда в терміналі. Інсталятор сам поставить пакети, драйвер NVIDIA, якщо він потрібен, служби та вхід. Вам лишиться увійти й ввести свої ключі.",
+    term:"Термінал",copy:"Копіювати",copied:"Скопійовано",picked:"Виділено",
+    c1n1:"Повторний запуск тієї ж команди оновлює систему.",
+    c1n2:'Без інтернету: <a href="https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz">архів, 177 МБ</a> і <a href="https://github.com/snemesh/navision/releases/download/latest-main/install.sh">install.sh</a>, потім <code>sh install.sh --file novaos-x86_64.tar.gz</code>',
+    c1doc:'Що робить інсталятор і як його видалити: <a href="https://github.com/snemesh/navision#install-on-ubuntu">докладніше</a>',
+    c2m:"ПОПЕРЕДНЯ ВЕРСІЯ · MACOS · APPLE SILICON · 15 МБ",
+    c2d:"Відкрийте dmg і перетягніть Remote Navision у «Програми». Збірка не нотаризована, тому вперше відкрийте її правою кнопкою й «Відкрити».",
+    c2btn:"Завантажити RemoteNavision.dmg",
+    c2n1:"На сервері потрібна Navision з <code>nova-remote</code>, вхід за ключем SSH без пароля і відкриті порти UDP 60100–60199.",
+    c2n2:"Якщо macOS не відкриває:",
+    c2doc:'Як підключитися до сервера: <a href="https://github.com/snemesh/navision#remote-navision-for-mac">докладніше</a>',
+    fo_p:"Ubuntu, якою керує AI. Перша публічна бета для Ubuntu і macOS.",
+    fo_gh:"Navision на GitHub",fo_prod:"Продукт",fo_inst:"Встановлення",fo_off:"Без інтернету",fo_rm:"Видалення",
+    fo_proj:"Проєкт",fo_rel:"Усі збірки",fo_bug:"Повідомити про помилку",fo_made:"Створюється разом з агентами Claude Code"
+  },
+  sk:{
+    title:"Navision",
+    n_sections:"Sekcie",n_assist:"Asistent",n_feat:"Funkcie",n_dl:"Stiahnuť",
+    beta:"Beta 1 · prvá verejná beta",
+    tag:"Ubuntu, ktoré riadi AI. <span>Váš agent vidí a robí to isté, čo vy.</span>",
+    lede:"Asistent na vašom predplatnom Claude Code alebo Codex píše kód a spravuje systém. Vlastný kompozitor Wayland v Ruste, matné sklo a nič zbytočné na pozadí.",
+    cta1:"Nainštalovať na Ubuntu",cta2:"Remote Navision pre Mac",
+    betanote:'Toto je prvá beta: niečo ešte nemusí fungovať. <a href="https://github.com/snemesh/navision/issues">Dajte nám vedieť, čo sa pokazilo</a>',
+    a_desk:"Pracovná plocha Navision: horný panel, Nastavenia s privítaním pri prvom prihlásení a Dock",
+    as_eb:"Asistent",as_h:"Claude Code v okne, nie v termináli",
+    as_l:"Chat s projektmi a históriou. Prácu robí oficiálne CLI vášho agenta, takže predplatné funguje tak, ako je.",
+    f1:"Akýkoľvek agent",f1d:"Claude Code, Codex, OpenCode, Gemini CLI. Viac predplatných naraz.",
+    f2:"Spravuje Ubuntu",f2d:"„Nainštaluj Docker“, „čo zaťažuje server“. Chat je rozhranie.",
+    f3:"Dispečer",f3d:"Rozdeľuje úlohy agentom a opakuje práce podľa plánu.",
+    f4:"Nezávisí od okna",f4d:"Zatvoríte okno a agenti pracujú ďalej na pozadí.",
+    a_brain:"Okno Asistent: projekty vľavo, odpoveď s odkazmi na záznam obrazovky",
+    ag_eb:"Agenti a root",ag_h:"Systém môžete zveriť agentovi",
+    ag_l:"Každý príkaz agenta pod rootom prechádza oknom hesla, kde je vidieť celý. Heslo overuje polkit a procesy používateľa ho nevidia.",
+    f5:"Vlastný model",f5d:"Lokálny LLM podľa adresy a kľúča, cez API Anthropic alebo OpenAI.",
+    f6:"Sandbox",f6d:"Agent pracuje vo vlastnom priečinku a von sa dostane len cez dvere, ktoré otvoríte vy.",
+    a_agents:"Asistent, sekcia Agenti a úlohy: vlastný server Local agent a úloha „Hľadať chyby“",
+    fe_eb:"Funkcie",fe_h:"Celý systém, nie téma vzhľadu",
+    fe_l:"Dock a Quick Look ako v macOS, rozloženie okien ako vo Windows. Každá akcia myšou je príkaz, ktorý agent zavolá s rovnakým výsledkom.",
+    a_mon:"Monitorovanie Navision: procesor, pamäť, sieť, disky, najvyťaženejšie programy a denník",
+    t1:"Hlas",t1d:"Diktovanie do akéhokoľvek poľa, čítanie odpovedí nahlas a rozhovor s asistentom bez rúk.",
+    t2:"Monitorovanie",t2d:"Procesor, pamäť, disky, sieť a najvyťaženejšie programy na jednej obrazovke aj vo widgetoch na ploche.",
+    t3:"Terminál",t3d:"Karty cez ⌘T, ktoré sa dajú presúvať medzi oknami, a klikateľné odkazy a cesty.",
+    t4:"Plynulo a úsporne",t4d:"Snímka sa kreslí len vtedy, keď sa niečo zmení, a podľa vblank. Nečinná plocha spí.",
+    t5:"Pád nestratí prácu",t5d:"Kompozitor sa obnoví sám a programy aj terminály zostanú na svojom mieste.",
+    t6:"Programy a hry",t6d:"Chrome, Claude Desktop, Steam s herným režimom, Wine a X11 cez Xwayland.",
+    re_pill:"Predbežná verzia",
+    re_l:"Navision beží na serveri Ubuntu bez grafickej karty a celé rozhranie kreslí váš Mac. Dock, okná, menu a animácie reagujú okamžite, aj cez sieť: zo servera prichádza len to, čo sa zmenilo.",
+    re_btn:"Stiahnuť pre Mac",
+    a_remote:"Pracovná plocha Navision, ktorú kreslí Remote Navision na Macu",
+    r1:"Server bez grafickej karty",r1d:"Programy, agenti a služby bežia na serveri. Nepotrebuje GPU ani monitor.",
+    r2:"Kreslí ho váš Mac",r2d:"Klient kreslí Navision presne tak, ako vyzerá, cez Metal, so zvukom a zdieľanou schránkou.",
+    r3:"Prihlásenie kľúčom SSH",r3d:"Ako bežné ssh: bez hesiel, k ľubovoľnému počtu serverov z jedného klienta.",
+    dl_eb:"Stiahnuť · Beta 1",dl_h:"Prvá beta, nové zostavenie po každej zmene",
+    dl_l:"Obe zostavenia vytvára CI zo zmien, ktoré prešli všetkými kontrolami.",
+    c1:"Navision pre Ubuntu",
+    c1d:"Jeden príkaz v termináli. Inštalátor sám nainštaluje balíky, ovládač NVIDIA, ak ho potrebujete, služby a prihlásenie. Zostane vám prihlásiť sa a zadať svoje kľúče.",
+    term:"Terminál",copy:"Kopírovať",copied:"Skopírované",picked:"Označené",
+    c1n1:"Opätovné spustenie toho istého príkazu systém aktualizuje.",
+    c1n2:'Bez internetu: <a href="https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz">archív, 177 MB</a> a <a href="https://github.com/snemesh/navision/releases/download/latest-main/install.sh">install.sh</a>, potom <code>sh install.sh --file novaos-x86_64.tar.gz</code>',
+    c1doc:'Čo robí inštalátor a ako ho odstrániť: <a href="https://github.com/snemesh/navision#install-on-ubuntu">podrobnosti</a>',
+    c2m:"PREDBEŽNÁ VERZIA · MACOS · APPLE SILICON · 15 MB",
+    c2d:"Otvorte dmg a presuňte Remote Navision do priečinka Aplikácie. Zostavenie nie je notarizované, preto ho prvýkrát otvorte pravým tlačidlom a voľbou Otvoriť.",
+    c2btn:"Stiahnuť RemoteNavision.dmg",
+    c2n1:"Server potrebuje Navision s <code>nova-remote</code>, prihlásenie kľúčom SSH bez hesla a otvorené porty UDP 60100–60199.",
+    c2n2:"Ak ho macOS neotvorí:",
+    c2doc:'Ako sa pripojiť k serveru: <a href="https://github.com/snemesh/navision#remote-navision-for-mac">podrobnosti</a>',
+    fo_p:"Ubuntu, ktoré riadi AI. Prvá verejná beta pre Ubuntu a macOS.",
+    fo_gh:"Navision na GitHube",fo_prod:"Produkt",fo_inst:"Inštalácia",fo_off:"Bez internetu",fo_rm:"Odinštalovanie",
+    fo_proj:"Projekt",fo_rel:"Všetky zostavenia",fo_bug:"Nahlásiť chybu",fo_made:"Vzniká spolu s agentmi Claude Code"
+  }};
+  var en={title:document.title,copy:"Copy",copied:"Copied",picked:"Selected"},cur="en";
+  var texts=document.querySelectorAll("[data-t]"),alts=document.querySelectorAll("[data-ta]"),labels=document.querySelectorAll("[data-tl]");
+  texts.forEach(function(e){en[e.dataset.t]=e.innerHTML});
+  alts.forEach(function(e){en[e.dataset.ta]=e.alt});
+  labels.forEach(function(e){en[e.dataset.tl]=e.getAttribute("aria-label")});
+  function word(k){return (T[cur]&&T[cur][k]!=null)?T[cur][k]:en[k]}
+  function apply(l){
+    cur=T[l]?l:"en";
+    document.documentElement.lang=cur;
+    document.title=word("title");
+    texts.forEach(function(e){var v=word(e.dataset.t);if(v!=null)e.innerHTML=v});
+    alts.forEach(function(e){var v=word(e.dataset.ta);if(v!=null)e.alt=v});
+    labels.forEach(function(e){var v=word(e.dataset.tl);if(v!=null)e.setAttribute("aria-label",v)});
+    document.querySelectorAll(".langs button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.l===cur?"true":"false")});
+  }
+  function pick(){
+    var q=(location.search.match(/[?&]lang=(\w+)/)||[])[1];
+    if(q)return q;
+    try{var s=localStorage.getItem("navision-lang");if(s)return s}catch(e){}
+    var ls=navigator.languages||[navigator.language||"en"];
+    for(var i=0;i<ls.length;i++){var c=String(ls[i]).slice(0,2).toLowerCase();
+      if(c==="uk")return "uk";if(c==="sk"||c==="cs")return "sk";if(c==="en")return "en"}
+    return "en";
+  }
+  document.querySelectorAll(".langs button").forEach(function(b){
+    b.addEventListener("click",function(){apply(b.dataset.l);try{localStorage.setItem("navision-lang",cur)}catch(e){}});
+  });
+  apply(pick());
+
+  var btn=document.getElementById("copy"),cmd=document.getElementById("cmd");
+  var text=cmd.textContent.replace(/^\$ /,"");
+  btn.addEventListener("click",function(){
+    function done(k){btn.textContent=word(k);setTimeout(function(){btn.textContent=word("copy")},1600)}
+    function sel(){var r=document.createRange();r.selectNodeContents(cmd);var s=getSelection();s.removeAllRanges();s.addRange(r);done("picked")}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done("copied")},sel)}else sel();
   });
 })();
 </script>

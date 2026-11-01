@@ -1,83 +1,112 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="shots/banner-dark.webp">
-  <img src="shots/banner-light.webp" alt="Navision — Ubuntu, которой управляет AI">
+  <img src="shots/banner-light.webp" alt="Navision: Ubuntu, run by AI">
 </picture>
 
-**[Сайт Navision](https://snemesh.github.io/navision/)** · [Установка на Ubuntu](#установка-на-ubuntu) · [Remote Navision для Mac](#remote-navision-для-mac) · [Все сборки](https://github.com/snemesh/navision/releases)
+**[Navision website](https://snemesh.github.io/navision/)** · [Install on Ubuntu](#install-on-ubuntu) · [Remote Navision for Mac](#remote-navision-for-mac) · [All builds](https://github.com/snemesh/navision/releases) · [Українською](#українською) · [Po slovensky](#po-slovensky)
 
-Navision — рабочий стол для Ubuntu со своим компоновщиком Wayland. Помощник на вашей
-подписке Claude Code или Codex пишет код и ведёт систему: «поставь Docker», «что грузит
-сервер», «почини тест». Здесь лежат сайт и готовые сборки. Их публикует CI после каждого
-изменения, которое прошло все проверки.
+> **Beta 1, the first public beta.** Some things may not work yet. If something breaks,
+> [tell us in issues](https://github.com/snemesh/navision/issues).
+
+Navision is a desktop for Ubuntu with its own Wayland compositor. An assistant on your own
+Claude Code or Codex subscription writes code and runs the system: "install Docker", "what
+is loading the server", "fix the test". This repository holds the website and ready builds.
+CI builds them from changes that passed every check.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="shots/desk-dark.webp">
-  <img src="shots/desk-light.webp" alt="Стол Navision: верхняя панель, Настройки с приветствием первого входа и Док внизу">
+  <img src="shots/desk-light.webp" alt="The Navision desktop: top bar, Settings with the first-run welcome, and the Dock">
 </picture>
 
-## Установка на Ubuntu
+## Install on Ubuntu
 
-Ubuntu Server или Desktop **26.04, x86_64**, видеокарта AMD, Intel или NVIDIA. Одна команда
-в терминале:
+Ubuntu Server or Desktop **26.04, x86_64**, with an AMD, Intel or NVIDIA graphics card. One
+command in a terminal:
 
 ```sh
 curl -fsSL https://github.com/snemesh/navision/releases/download/latest-main/install.sh | sh
 ```
 
-Команда спросит пароль `sudo`. Установщик сам посмотрит машину и поставит:
+It asks for your `sudo` password. The installer looks at the machine and sets up:
 
-- недостающие пакеты Ubuntu (PipeWire, Xwayland, порталы, шрифты…);
-- драйвер NVIDIA и `nvidia-drm.modeset=1`, если на машине NVIDIA (`--no-gpu-driver` — не трогать);
-- саму систему в `/usr/lib/novaos` и её службы;
-- вход: свой экран входа на Ubuntu Server или пункт в списке сеансов GDM/SDDM на Ubuntu Desktop;
-- Google Chrome, Claude Desktop и Claude Code (`--no-extras` — без них).
+- the Ubuntu packages that are missing (PipeWire, Xwayland, portals, fonts…);
+- the NVIDIA driver and `nvidia-drm.modeset=1` on NVIDIA machines (`--no-gpu-driver` leaves them alone);
+- Navision itself in `/usr/lib/novaos` and its services;
+- sign-in: its own login screen on Ubuntu Server, or an entry in the GDM/SDDM session list on Ubuntu Desktop;
+- Google Chrome, Claude Desktop and Claude Code (`--no-extras` skips them).
 
-В конце он скажет, что делать дальше: обычно перезагрузиться и войти. При первом входе
-откроются Настройки → Аккаунты: там вы входите в Claude и вводите свои ключи. Повторный
-запуск той же команды обновляет систему.
+At the end it tells you what to do next, usually reboot and sign in. On first sign-in
+Settings → Accounts opens: that is where you sign in to Claude and enter your keys. Running
+the same command again updates the system.
 
-### Без интернета
+### Offline
 
-Скачайте на другой машине [архив](https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz)
-и [install.sh](https://github.com/snemesh/navision/releases/download/latest-main/install.sh),
-перенесите их и запустите `sh install.sh --file novaos-x86_64.tar.gz`. Пакеты Ubuntu всё равно
-ставятся через apt.
+On another machine download [the archive](https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz)
+and [install.sh](https://github.com/snemesh/navision/releases/download/latest-main/install.sh),
+copy both over and run `sh install.sh --file novaos-x86_64.tar.gz`. Ubuntu packages still come
+from apt.
 
-### Удалить
+### Uninstall
 
-С текстовой консоли (Ctrl+Alt+F2), не из самой системы:
+From a text console (Ctrl+Alt+F2), not from inside Navision:
 
 ```sh
-sudo novaos-setup remove              # система, службы, вход
-sudo novaos-setup remove --packages   # и пакеты, которые поставил установщик
+sudo novaos-setup remove              # the system, its services and sign-in
+sudo novaos-setup remove --packages   # and the packages the installer added
 ```
 
-## Remote Navision для Mac
+## Remote Navision for Mac
 
-**[Скачать RemoteNavision.dmg](https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg)**
-(macOS, Apple Silicon, предварительная версия)
+**[Download RemoteNavision.dmg](https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg)**
+(macOS, Apple Silicon, preview)
 
-Navision на сервере Ubuntu без видеокарты, а весь интерфейс рисует ваш Mac: Док, окна, меню
-и анимации отвечают сразу, даже через сеть.
+Navision runs on an Ubuntu server without a graphics card, and your Mac draws the whole
+interface: the Dock, windows, menus and animations respond instantly, even over the network.
 
-1. Откройте dmg и перетащите Remote Navision в «Программы». Сборка не нотаризована, поэтому
-   первый запуск — правой кнопкой и «Открыть». Если macOS всё равно не открывает:
+1. Open the dmg and drag Remote Navision to Applications. The build is not notarized, so the
+   first time open it with a right-click and Open. If macOS still refuses:
    `xattr -dr com.apple.quarantine "/Applications/Remote Navision.app"`.
-2. На сервере поставьте Navision той же командой, что [выше](#установка-на-ubuntu).
-3. Вход на сервер — по ключу SSH без пароля (`ssh-copy-id user@server`), и на сервере открыты
-   порты UDP 60100–60199.
+2. Install Navision on the server with the same command as [above](#install-on-ubuntu).
+3. Sign in to the server with an SSH key, no password (`ssh-copy-id user@server`), and open
+   UDP ports 60100–60199 on it.
 
-## Что внутри
+## What's inside
 
-- **Помощник.** Claude Code в окне, а не в терминале: чат с проектами и историей. Работает
-  официальный CLI вашего агента: Claude Code, Codex, OpenCode, Gemini CLI.
-- **Агенты и root.** Команда агента от root проходит через окно пароля, где она видна целиком.
-  Своя локальная LLM по адресу и ключу, дела по расписанию.
-- **Голос.** Диктовка в любое поле, чтение ответов вслух и разговор с помощником.
-- **Мониторинг, Терминал, Файлы, Редактор, Диски, Снимки и запись экрана.**
-- **Плавно и экономно.** Кадр только при изменениях и по vblank, простой стол спит.
-- **Программы и игры.** Chrome, Claude Desktop, Steam с игровым режимом, Wine.
+- **Assistant.** Claude Code in a window, not a terminal: chat with projects and history. The
+  official CLI of your agent does the work: Claude Code, Codex, OpenCode, Gemini CLI.
+- **Agents and root.** An agent's root command goes through a password window that shows it
+  in full. Your own local LLM by address and key, jobs on a schedule.
+- **Voice.** Dictation into any field, answers read aloud and conversation with the assistant.
+- **Monitoring, Terminal, Files, Editor, Disks, Screenshots and screen recording.**
+- **Smooth and frugal.** A frame only when something changes and on vblank; an idle desktop sleeps.
+- **Apps and games.** Chrome, Claude Desktop, Steam with game mode, Wine.
 
-<img src="shots/brain-light.webp" alt="Окно «Помощник»: проекты слева, ответ со ссылками на запись экрана">
+The interface of Navision itself is in Russian for now; the screenshots show it as it is.
 
-Нашли ошибку — [напишите в issues](https://github.com/snemesh/navision/issues).
+<img src="shots/brain-light.webp" alt="The Assistant window: projects on the left, an answer with links to a screen recording">
+
+## Українською
+
+**Beta 1, перша публічна бета.** Navision — робочий стіл для Ubuntu 26.04 (x86_64), яким
+керує AI-помічник на вашій підписці Claude Code або Codex. Встановлення однією командою:
+
+```sh
+curl -fsSL https://github.com/snemesh/navision/releases/download/latest-main/install.sh | sh
+```
+
+Клієнт для Mac: [RemoteNavision.dmg](https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg).
+Докладніше — на [сайті](https://snemesh.github.io/navision/?lang=uk).
+
+## Po slovensky
+
+**Beta 1, prvá verejná beta.** Navision je pracovné prostredie pre Ubuntu 26.04 (x86_64),
+ktoré riadi AI asistent na vašom predplatnom Claude Code alebo Codex. Inštalácia jedným príkazom:
+
+```sh
+curl -fsSL https://github.com/snemesh/navision/releases/download/latest-main/install.sh | sh
+```
+
+Klient pre Mac: [RemoteNavision.dmg](https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg).
+Viac na [webe](https://snemesh.github.io/navision/?lang=sk).
+
+Found a bug? [Open an issue](https://github.com/snemesh/navision/issues).
