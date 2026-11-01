@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: the page sits on Navision's own satin wallpaper. Real screenshots are the main
-   material and carry no frame: their edges melt into the wallpaper they were taken on.
+   material: sharp and without a glass frame, the first one across the whole page width.
    Glass the way the shell draws it (blurred body, lit rim, inner sheen, two-step shadow)
    is kept for the nav, feature tiles, download cards and footer. Text comes in English,
    Ukrainian and Slovak (the script at the end). Colors, radii and type: design/tokens.json. */
@@ -119,12 +119,12 @@ h2{font-size:clamp(34px,4.6vw,56px);line-height:1.04;font-weight:700;letter-spac
 .hero .tag span{color:var(--text2)}
 .hero .lede{max-width:36em;margin:18px auto 0}
 .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px}
-.stage{margin:40px auto 0;max-width:1280px;perspective:1600px}
+.stage{margin:64px auto 0;max-width:1920px;perspective:1600px}
 .stage picture{display:block;transform-origin:50% 0}
 .stage img{width:100%;height:auto}
 @supports (animation-timeline: view()){
   .stage picture{animation:settle linear both;animation-timeline:view();animation-range:entry 0% cover 45%}
-  @keyframes settle{from{transform:rotateX(12deg) scale(.95)}to{transform:none}}
+  @keyframes settle{from{transform:scale(.9)}to{transform:none}}
 }
 
 /* Sections */
@@ -135,9 +135,8 @@ section{padding-block:144px 0}
 .duo.flip .copy{order:2}
 @media (max-width:920px){.duo,.duo.flip{grid-template-columns:minmax(0,1fr)}.duo.flip .copy{order:0}}
 .copy{display:grid;gap:20px;min-width:0;align-content:center}
-.pic{margin:0 -5%;min-width:0}
+.pic{margin:0;min-width:0}
 .pic img{width:100%;height:auto}
-@media (max-width:920px){.pic{margin:0 -20px}}
 .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px;margin-top:8px}
 @media (max-width:520px){.facts{grid-template-columns:minmax(0,1fr)}}
 .fact{display:grid;gap:4px}
@@ -158,18 +157,14 @@ section{padding-block:144px 0}
 .g-slate{background:linear-gradient(180deg,#B9BED3,#7D839F)} .g-violet{background:linear-gradient(180deg,#A68AF7,#7A4AE6)}
 .g-emerald{background:linear-gradient(180deg,#3FD0A4,#02A37D)} .g-rose{background:linear-gradient(180deg,#F4A3C4,#D6588E)}
 .g-indigo{background:linear-gradient(180deg,#7F97F8,#4B5DDF)} .g-peach{background:linear-gradient(180deg,#F2B8A0,#D9805F)}
-.wide{margin:32px -3% 0}
+.wide{margin:56px 0 0}
 .wide img{width:100%;height:auto}
 
-/* Screenshots melt into the page: no frame, every edge fades into the wallpaper.
-   --mx side fade, --mt top fade ends, --mb bottom fade starts. */
-.melt{--mx:11%;--mt:7%;--mb:76%;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--mx),#000 calc(100% - var(--mx)),transparent),linear-gradient(180deg,transparent,#000 var(--mt),#000 var(--mb),transparent);
-  -webkit-mask-composite:source-in;
-  mask-image:linear-gradient(90deg,transparent,#000 var(--mx),#000 calc(100% - var(--mx)),transparent),linear-gradient(180deg,transparent,#000 var(--mt),#000 var(--mb),transparent);
-  mask-composite:intersect}
-.stage .melt{--mx:13%;--mt:3%;--mb:64%}
-.remote-shot{--mb:70%}
+/* Screenshots: sharp, with no glass frame and no fade. The first one spans the whole page
+   width like a screen; the rest are the windows themselves, with the shell's corner radius
+   and shadow. */
+.shot img{border-radius:14px;box-shadow:0 0 0 1px var(--edge),0 2px 6px var(--drop-2),0 34px 80px var(--drop)}
+.stage .shot img{border-radius:0;box-shadow:0 30px 90px var(--drop)}
 .trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:48px;border-top:1px solid var(--line)}
 @media (max-width:760px){.trio{grid-template-columns:minmax(0,1fr)}}
 .trio div{padding:24px 24px 0 0;display:grid;gap:6px}
@@ -184,7 +179,7 @@ section{padding-block:144px 0}
 .pill.beta i{background:var(--violet);box-shadow:0 0 0 3px rgba(124,92,255,.25)}
 
 /* Night band: on the light page the dark screenshots sit in a band of the dark wallpaper
-   that fades in and out, so they melt into it too. In the dark theme it is invisible. */
+   that fades in and out. In the dark theme it is invisible. */
 .night{position:relative;isolation:isolate;color:var(--text);padding-bottom:320px;margin-top:40px;
   --text:#ECEEFA; --text2:#A3A8C3; --text3:#757A98;
   --glass:rgba(22,24,44,.46); --glass-2:rgba(32,34,58,.72); --sheen:rgba(255,255,255,.07);
@@ -286,8 +281,8 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
       </div>
       <p class="betanote" data-t="betanote">This is the first beta: some things may not work yet. <a href="https://github.com/snemesh/navision/issues">Tell us what broke</a></p>
     </div>
-    <div class="wrap stage">
-      <picture class="melt">
+    <div class="stage">
+      <picture class="shot">
         <source srcset="shots/desk-dark.webp" media="(prefers-color-scheme: dark)">
         <img src="shots/desk-light.webp" width="1600" height="900" alt="The Navision desktop: top bar, Settings with the first-run welcome, and the Dock" data-ta="a_desk">
       </picture>
@@ -307,7 +302,7 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
           <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg><span data-t="f4">Outlives the window</span></b><span data-t="f4d">Close the window and the agents keep working in the background.</span></div>
         </div>
       </div>
-      <figure class="pic melt"><img src="shots/brain-light.webp" width="1401" height="856" alt="The Assistant window: projects on the left, an answer with links to a screen recording" data-ta="a_brain" loading="lazy"></figure>
+      <figure class="pic shot"><img src="shots/brain-light.webp" width="1401" height="856" alt="The Assistant window: projects on the left, an answer with links to a screen recording" data-ta="a_brain" loading="lazy"></figure>
     </div>
   </section>
 
@@ -323,7 +318,7 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
           <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg><span data-t="f6">Sandbox</span></b><span data-t="f6d">The agent works in its own folder and reaches outside only through doors you open.</span></div>
         </div>
       </div>
-      <figure class="pic melt"><img src="shots/agents-dark.webp" width="1301" height="856" alt="Assistant, Agents and jobs: a Local agent server and a “Hunt for bugs” job" data-ta="a_agents" loading="lazy"></figure>
+      <figure class="pic shot"><img src="shots/agents-dark.webp" width="1301" height="856" alt="Assistant, Agents and jobs: a Local agent server and a “Hunt for bugs” job" data-ta="a_agents" loading="lazy"></figure>
     </div>
   </section>
 
@@ -334,7 +329,7 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
         <h2 data-t="fe_h">A whole system, not a theme</h2>
         <p class="lede" data-t="fe_l">A Dock and Quick Look like macOS, window snapping like Windows. Every mouse action is a command an agent can call with the same result.</p>
       </div>
-      <div class="wide melt"><img src="shots/monitor.webp" width="1600" height="900" alt="Navision Monitoring: CPU, memory, network, disks, the busiest programs and the log" data-ta="a_mon" loading="lazy"></div>
+      <div class="wide shot"><img src="shots/monitor.webp" width="1600" height="900" alt="Navision Monitoring: CPU, memory, network, disks, the busiest programs and the log" data-ta="a_mon" loading="lazy"></div>
       <div class="tiles">
         <article class="tile glass"><div class="sq g-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3 data-t="t1">Voice</h3><p data-t="t1d">Dictation into any field, answers read aloud and hands-free conversation with the assistant.</p></article>
         <article class="tile glass"><div class="sq g-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div><h3 data-t="t2">Monitoring</h3><p data-t="t2d">CPU, memory, disks, network and the busiest programs on one screen and in desktop widgets.</p></article>
@@ -355,7 +350,7 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
           <p class="lede" data-t="re_l">Navision runs on an Ubuntu server without a graphics card, and your Mac draws the whole interface. The Dock, windows, menus and animations respond instantly, even over the network: the server sends only what changed.</p>
           <div><a class="btn pri" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg><span data-t="re_btn">Download for Mac</span></a></div>
         </div>
-        <figure class="pic melt remote-shot"><img src="shots/desk-dark.webp" width="1600" height="900" alt="The Navision desktop drawn by Remote Navision on a Mac" data-ta="a_remote"></figure>
+        <figure class="pic shot"><img src="shots/desk-dark.webp" width="1600" height="900" alt="The Navision desktop drawn by Remote Navision on a Mac" data-ta="a_remote"></figure>
       </div>
       <div class="trio">
         <div><b data-t="r1">No GPU on the server</b><span data-t="r1d">Programs, agents and services run on the server. It needs neither a GPU nor a monitor.</span></div>
