@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Navision</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Navision — Ubuntu, которой управляет AI. Помощник на вашей подписке Claude Code или Codex. Установка одной командой и Remote Navision для Mac.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath fill=%27%237C5CFF%27 d=%27M12 3c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the page sits on Navision's own satin wallpaper. Glass the way the shell draws it
+   (blurred body, lit rim, inner sheen, two-step shadow) carries a centered hero, real
+   screenshots as the main material, a Mac window for Remote Navision and a glass footer.
+   Colors, radii and type come from design/tokens.json. */
+:root{
+  --font-ui:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --wall-img:url("shots/wall-light.webp");
+  --wall:#E4E3FA;
+  --text:#1B1D2E; --text2:#5D6178; --text3:#8B8FA8;
+  --glass:rgba(255,255,255,.42); --glass-2:rgba(255,255,255,.62);
+  --sheen:rgba(255,255,255,.55);
+  --rim:rgba(255,255,255,.95); --rim-low:rgba(255,255,255,.25);
+  --edge:rgba(40,40,110,.10);
+  --drop:rgba(36,30,96,.16); --drop-2:rgba(36,30,96,.10);
+  --line:rgba(27,29,46,.09);
+  --violet:#7C5CFF; --sky:#36C9F0; --btn-top:#7F97F8; --btn-base:#4B5DDF;
+  --term:rgba(26,28,48,.86); --term-text:#E6E8F7; --term-dim:#8E93B5;
+  --chip:rgba(27,29,46,.06);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --wall-img:url("shots/wall-dark.webp"); --wall:#1A1740;
+  --text:#ECEEFA; --text2:#A3A8C3; --text3:#757A98;
+  --glass:rgba(22,24,44,.46); --glass-2:rgba(32,34,58,.72);
+  --sheen:rgba(255,255,255,.07);
+  --rim:rgba(255,255,255,.38); --rim-low:rgba(255,255,255,.05);
+  --edge:rgba(0,0,0,.35);
+  --drop:rgba(0,0,0,.45); --drop-2:rgba(0,0,0,.30);
+  --line:rgba(255,255,255,.09);
+  --term:rgba(10,11,22,.82); --term-text:#E6E8F7; --term-dim:#7C82A6;
+  --chip:rgba(255,255,255,.07);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --wall-img:url("shots/wall-dark.webp"); --wall:#1A1740;
+  --text:#ECEEFA; --text2:#A3A8C3; --text3:#757A98;
+  --glass:rgba(22,24,44,.46); --glass-2:rgba(32,34,58,.72);
+  --sheen:rgba(255,255,255,.07);
+  --rim:rgba(255,255,255,.38); --rim-low:rgba(255,255,255,.05);
+  --edge:rgba(0,0,0,.35);
+  --drop:rgba(0,0,0,.45); --drop-2:rgba(0,0,0,.30);
+  --line:rgba(255,255,255,.09);
+  --term:rgba(10,11,22,.82); --term-text:#E6E8F7; --term-dim:#7C82A6;
+  --chip:rgba(255,255,255,.07);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--wall);color:var(--text);font:16px/1.6 var(--font-ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+img{max-width:100%;display:block}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+/* Wallpaper: Navision's satin, fixed behind everything. */
+.wall{position:fixed;inset:0;z-index:-1;background:var(--wall-img) center/cover no-repeat,var(--wall)}
+.wall::after{content:"";position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* Glass: blurred body, rim lit from the top left, sheen on top, soft two-step shadow. */
+.glass{position:relative;isolation:isolate;background:linear-gradient(180deg,var(--sheen),transparent 38%),var(--glass);
+  backdrop-filter:blur(36px) saturate(190%);-webkit-backdrop-filter:blur(36px) saturate(190%);
+  box-shadow:0 1px 2px var(--drop-2),0 24px 64px var(--drop),inset 0 0 0 1px var(--edge)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:1;
+  background:linear-gradient(155deg,var(--rim),var(--rim-low) 40%,var(--rim-low) 75%,var(--rim));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+
+/* Nav: a capsule like the shell's top bar. */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:11;background:var(--wall)}
+.nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:10;display:flex;justify-content:center;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.nav .bar{display:flex;align-items:center;gap:6px;height:48px;padding:0 6px 0 16px;border-radius:999px;max-width:100%}
+.mark{display:flex;align-items:center;gap:9px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap}
+.mark i{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:linear-gradient(140deg,#A68AF7,#5B5BF0 55%,#36C9F0);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.mark i svg{width:13px;height:13px;color:#fff}
+.nav .links{display:flex;gap:2px;margin:0 6px 0 18px}
+.nav .links a{font-size:14px;color:var(--text2);text-decoration:none;padding:6px 12px;border-radius:999px;white-space:nowrap}
+.nav .links a:hover{color:var(--text);background:var(--chip)}
+@media (max-width:760px){.nav .links{display:none}.nav .bar{gap:14px}}
+
+/* Buttons: liquid glass; the main one in the accent. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 24px;border-radius:999px;font:600 15px/1 var(--font-ui);text-decoration:none;white-space:nowrap;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}
+.btn svg{width:18px;height:18px}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.97)}
+.btn.pri{color:#fff;background:linear-gradient(180deg,var(--btn-top),var(--btn-base));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(0,0,0,.12),0 10px 28px rgba(75,93,223,.38)}
+.btn.pri:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(0,0,0,.12),0 14px 36px rgba(75,93,223,.5)}
+.btn.sm{height:38px;padding:0 16px;font-size:14px}
+.btn.ghost{color:var(--text);background:var(--glass-2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 var(--rim),inset 0 0 0 1px var(--edge),0 8px 22px var(--drop-2)}
+
+/* Type */
+.eyebrow{font:500 12px/16px var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--text2)}
+h2{font-size:clamp(34px,4.6vw,56px);line-height:1.04;font-weight:700;letter-spacing:-.035em}
+.lede{font-size:clamp(17px,1.5vw,19px);line-height:1.6;color:var(--text2)}
+
+/* Hero */
+.hero{text-align:center;padding-block:96px 0}
+.hero h1{font-size:clamp(64px,11vw,136px);line-height:.92;font-weight:700;letter-spacing:-.055em;margin-top:22px}
+.hero .tag{font-size:clamp(22px,2.8vw,32px);line-height:1.25;font-weight:600;letter-spacing:-.025em;margin:22px auto 0;max-width:22em}
+.hero .tag span{color:var(--text2)}
+.hero .lede{max-width:36em;margin:18px auto 0}
+.cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px}
+.stage{margin:72px auto 0;max-width:1120px;perspective:1600px}
+.stage .frame{border-radius:22px;padding:8px;transform-origin:50% 0}
+.stage img{border-radius:15px;width:100%;height:auto;box-shadow:0 0 0 1px var(--edge)}
+@supports (animation-timeline: view()){
+  .stage .frame{animation:settle linear both;animation-timeline:view();animation-range:entry 0% cover 45%}
+  @keyframes settle{from{transform:rotateX(14deg) scale(.94)}to{transform:none}}
+}
+
+/* Sections */
+section{padding-block:144px 0}
+.center{text-align:center;max-width:780px;margin:0 auto;display:grid;gap:18px;justify-items:center}
+.panel{border-radius:32px;padding:clamp(28px,5vw,64px)}
+.duo{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,64px);align-items:center}
+.duo.flip{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.duo.flip .copy{order:2}
+@media (max-width:920px){.duo,.duo.flip{grid-template-columns:minmax(0,1fr)}.duo.flip .copy{order:0}}
+.copy{display:grid;gap:20px;min-width:0;align-content:center}
+.pic{border-radius:16px;overflow:hidden;box-shadow:0 0 0 1px var(--edge),0 30px 70px var(--drop);min-width:0}
+.pic img{width:100%;height:auto}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px;margin-top:8px}
+@media (max-width:520px){.facts{grid-template-columns:minmax(0,1fr)}}
+.fact{display:grid;gap:4px}
+.fact b{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.fact b svg{width:16px;height:16px;color:var(--violet);flex:none}
+.fact span{font-size:14px;line-height:1.55;color:var(--text2)}
+
+/* Feature tiles with the Settings squircles */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px}
+@media (max-width:920px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.tiles{grid-template-columns:minmax(0,1fr)}}
+.tile{border-radius:24px;padding:28px;display:grid;gap:12px;align-content:start}
+.sq{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 16px rgba(30,30,80,.2)}
+.sq svg{width:22px;height:22px}
+.tile h3{font-size:18px;font-weight:600;letter-spacing:-.01em;margin-top:6px}
+.tile p{font-size:14.5px;line-height:1.6;color:var(--text2)}
+.g-sky{background:linear-gradient(180deg,#86CDF5,#3B95D6)} .g-mint{background:linear-gradient(180deg,#7FDDB3,#2FA57C)}
+.g-slate{background:linear-gradient(180deg,#B9BED3,#7D839F)} .g-violet{background:linear-gradient(180deg,#A68AF7,#7A4AE6)}
+.g-emerald{background:linear-gradient(180deg,#3FD0A4,#02A37D)} .g-rose{background:linear-gradient(180deg,#F4A3C4,#D6588E)}
+.g-indigo{background:linear-gradient(180deg,#7F97F8,#4B5DDF)} .g-peach{background:linear-gradient(180deg,#F2B8A0,#D9805F)}
+.wide{margin-top:56px;border-radius:22px;padding:8px}
+.wide img{border-radius:15px;width:100%;height:auto}
+
+/* Remote Navision: a Mac window with the shell inside. */
+.mac{border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.25),0 40px 90px rgba(10,8,40,.45);background:#1E2036;min-width:0}
+.mac .title{height:34px;display:flex;align-items:center;gap:8px;padding:0 14px;background:linear-gradient(180deg,#2C2E48,#232540);border-bottom:1px solid rgba(0,0,0,.35)}
+.mac .title i{width:12px;height:12px;border-radius:50%;flex:none}
+.mac .title i:nth-child(1){background:#FF5F57}.mac .title i:nth-child(2){background:#FEBC2E}.mac .title i:nth-child(3){background:#28C840}
+.mac .title span{flex:1;text-align:center;font-size:12.5px;color:#B8BCD6;margin-right:52px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mac img{width:100%;height:auto}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:48px;border-top:1px solid var(--line)}
+@media (max-width:760px){.trio{grid-template-columns:minmax(0,1fr)}}
+.trio div{padding:24px 24px 0 0;display:grid;gap:6px}
+.trio div + div{padding-left:24px;border-left:1px solid var(--line)}
+@media (max-width:760px){.trio div + div{padding-left:0;border-left:0;border-top:1px solid var(--line)}.trio div{padding:20px 0}}
+.trio b{font-size:15px;font-weight:600}
+.trio span{font-size:14px;line-height:1.55;color:var(--text2)}
+.pill{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:999px;font:500 12px/1 var(--font-mono);letter-spacing:.06em;color:var(--text2);background:var(--chip);box-shadow:inset 0 0 0 1px var(--line)}
+.pill i{width:7px;height:7px;border-radius:50%;background:#E8A33D;box-shadow:0 0 0 3px rgba(232,163,61,.22)}
+
+/* Download */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:64px;text-align:left}
+@media (max-width:920px){.cards{grid-template-columns:minmax(0,1fr)}}
+.card{border-radius:30px;padding:clamp(24px,3.6vw,40px);display:grid;gap:22px;align-content:start}
+.card .head{display:flex;align-items:center;gap:16px}
+.card .sq{width:56px;height:56px;border-radius:15px}
+.card .sq svg{width:28px;height:28px}
+.card h3{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.card .meta{font:500 12px/16px var(--font-mono);letter-spacing:.08em;color:var(--text3);margin-top:2px}
+.card > p{font-size:15px;line-height:1.6;color:var(--text2)}
+.term{border-radius:14px;overflow:hidden;background:var(--term);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 16px 40px var(--drop-2);min-width:0}
+.term .tbar{height:34px;display:flex;align-items:center;gap:10px;padding:0 6px 0 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.term .tab{font-size:12px;color:var(--term-text);background:rgba(255,255,255,.08);padding:4px 14px;border-radius:999px}
+.copybtn{margin-left:auto;height:26px;padding:0 12px;border:0;border-radius:999px;cursor:pointer;font:500 12px/1 var(--font-ui);color:var(--term-text);background:rgba(255,255,255,.10)}
+.copybtn:hover{background:rgba(255,255,255,.18)}
+.term pre{margin:0;padding:16px;overflow-x:auto;font:13.5px/22px var(--font-mono);color:var(--term-text)}
+.term pre i{font-style:normal;color:#7FDDB3;user-select:none}
+.notes{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:10px;font-size:14px;line-height:1.55;color:var(--text2)}
+.notes code{font:12.5px var(--font-mono);color:var(--text);background:var(--chip);padding:2px 7px;border-radius:6px;overflow-wrap:anywhere}
+.notes a,.doc a{color:var(--violet);text-decoration:none;font-weight:500}
+.notes a:hover,.doc a:hover{text-decoration:underline}
+.doc{font-size:13.5px;color:var(--text3)}
+
+/* Footer: a glass sheet with the brand, columns of links and a closing line. */
+footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
+.foot{border-radius:32px;padding:clamp(28px,4.5vw,56px) clamp(24px,4.5vw,56px) 28px;display:grid;gap:40px}
+.foot .top{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:32px}
+@media (max-width:860px){.foot .top{grid-template-columns:repeat(2,minmax(0,1fr))}.foot .brand{grid-column:1/-1}}
+.foot .brand{display:grid;gap:16px;align-content:start}
+.foot .brand .mark{font-size:20px}
+.foot .brand .mark i{width:32px;height:32px;border-radius:9px}
+.foot .brand .mark i svg{width:17px;height:17px}
+.foot .brand p{font-size:14.5px;line-height:1.6;color:var(--text2);max-width:24em}
+.foot .brand .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.col{display:grid;gap:10px;align-content:start}
+.col h4{margin:0 0 4px;font:500 11px/14px var(--font-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--text3)}
+.col a{font-size:14.5px;color:var(--text2);text-decoration:none;width:fit-content}
+.col a:hover{color:var(--text)}
+.foot .bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:var(--text3)}
+</style>
+</head>
+<body>
+<div class="wall" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="bar glass">
+    <a class="mark" href="#top"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z"/></svg></i>Navision</a>
+    <nav class="links" aria-label="Разделы">
+      <a href="#assistant">Помощник</a>
+      <a href="#features">Возможности</a>
+      <a href="#remote">Remote Navision</a>
+      <a href="https://github.com/snemesh/navision">GitHub</a>
+    </nav>
+    <a class="btn pri sm" href="#download">Скачать</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Оболочка для Ubuntu · AI в основе</div>
+      <h1>Navision</h1>
+      <p class="tag">Ubuntu, которой управляет AI. <span>Ваш агент видит и делает то же, что и вы.</span></p>
+      <p class="lede">Помощник на вашей подписке Claude Code или Codex пишет код и ведёт систему. Свой компоновщик Wayland на Rust, матовое стекло и ничего лишнего в фоне.</p>
+      <div class="cta">
+        <a class="btn pri" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Установить на Ubuntu</a>
+        <a class="btn ghost" href="#remote">Remote Navision для Mac</a>
+      </div>
+    </div>
+    <div class="wrap stage">
+      <div class="frame glass">
+        <picture>
+          <source srcset="shots/desk-dark.webp" media="(prefers-color-scheme: dark)">
+          <img src="shots/desk-light.webp" width="1600" height="900" alt="Стол Navision: верхняя панель, окно Настроек с приветствием первого входа и Док внизу">
+        </picture>
+      </div>
+    </div>
+  </div>
+
+  <section id="assistant">
+    <div class="wrap">
+      <div class="panel glass duo">
+        <div class="copy">
+          <div class="eyebrow">Помощник</div>
+          <h2>Claude Code в окне, а не в терминале</h2>
+          <p class="lede">Чат с проектами и историей. Работу делает официальный CLI вашего агента, поэтому подписка работает как есть.</p>
+          <div class="facts">
+            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Любой агент</b><span>Claude Code, Codex, OpenCode, Gemini CLI. Несколько подписок сразу.</span></div>
+            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>Ведёт Ubuntu</b><span>«Поставь Docker», «что грузит сервер». Чат и есть интерфейс.</span></div>
+            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Диспетчер</b><span>Раздаёт задачи агентам и повторяет дела по расписанию.</span></div>
+            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Не зависит от окна</b><span>Закрыли окно, агенты продолжают работать в фоне.</span></div>
+          </div>
+        </div>
+        <figure class="pic" style="margin:0"><img src="shots/brain-light.webp" width="1401" height="856" alt="Окно «Помощник»: проекты слева, ответ со ссылками на запись экрана" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="panel glass duo flip">
+        <div class="copy">
+          <div class="eyebrow">Агенты и root</div>
+          <h2>Систему можно доверить агенту</h2>
+          <p class="lede">Команда агента от root проходит через окно пароля, где она видна целиком. Пароль проверяет polkit, процессы пользователя его не видят.</p>
+          <div class="facts">
+            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg>Своя модель</b><span>Локальная LLM по адресу и ключу, через API Anthropic или OpenAI.</span></div>
+            <div class="fact"><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg>Песочница</b><span>Агент работает в своей папке и выходит наружу только через явные двери.</span></div>
+          </div>
+        </div>
+        <figure class="pic" style="margin:0"><img src="shots/agents-dark.webp" width="1301" height="856" alt="Помощник, раздел «Агенты и дела»: свой сервер Local agent и дело «Искать баги»" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="center">
+        <div class="eyebrow">Возможности</div>
+        <h2>Целая система, а не тема оформления</h2>
+        <p class="lede">Док и Quick Look как в macOS, раскладки окон как в Windows. Каждое действие мыши — команда, которую агент вызывает с тем же результатом.</p>
+      </div>
+      <div class="wide glass"><img src="shots/monitor.webp" width="1600" height="900" alt="Мониторинг Navision: процессор, память, сеть, диски, самые занятые программы и журнал" loading="lazy"></div>
+      <div class="tiles">
+        <article class="tile glass"><div class="sq g-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3>Голос</h3><p>Диктовка в любое поле, чтение ответов вслух и разговор с помощником без рук.</p></article>
+        <article class="tile glass"><div class="sq g-mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div><h3>Мониторинг</h3><p>Процессор, память, диски, сеть и самые занятые программы на одном экране и в виджетах на столе.</p></article>
+        <article class="tile glass"><div class="sq g-slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 4 4-4 4M12 16h7"/></svg></div><h3>Терминал</h3><p>Вкладки по ⌘T, которые перетаскиваются между окнами, и кликабельные ссылки и пути.</p></article>
+        <article class="tile glass"><div class="sq g-violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h7l-1 7 9-11h-7z"/></svg></div><h3>Плавно и экономно</h3><p>Кадр рисуется только при изменениях и по vblank. Простой стол спит.</p></article>
+        <article class="tile glass"><div class="sq g-emerald"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Падение не теряет работу</h3><p>Компоновщик поднимается сам, а программы и терминалы остаются на месте.</p></article>
+        <article class="tile glass"><div class="sq g-rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3M16 12h.01M18 14h.01"/></svg></div><h3>Программы и игры</h3><p>Chrome, Claude Desktop, Steam с игровым режимом, Wine и X11 через Xwayland.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="remote">
+    <div class="wrap">
+      <div class="panel glass">
+        <div class="duo">
+          <div class="copy">
+            <span class="pill"><i></i>Предварительная версия</span>
+            <h2>Remote Navision</h2>
+            <p class="lede">Navision на сервере Ubuntu без видеокарты, а весь интерфейс рисует ваш Mac. Док, окна, меню и анимации отвечают сразу, даже через сеть: с сервера приходит только то, что изменилось.</p>
+            <div><a class="btn pri" href="#download"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Скачать для Mac</a></div>
+          </div>
+          <div class="mac">
+            <div class="title"><i></i><i></i><i></i><span>Remote Navision — сервер Ubuntu</span></div>
+            <img src="shots/desk-dark.webp" width="1600" height="900" alt="Стол Navision внутри окна Remote Navision на Mac" loading="lazy">
+          </div>
+        </div>
+        <div class="trio">
+          <div><b>Сервер без видеокарты</b><span>Программы, агенты и службы работают на сервере. Ему не нужен ни GPU, ни монитор.</span></div>
+          <div><b>Рисует Mac</b><span>Клиент рисует Navision один в один на Metal, со звуком и общим буфером обмена.</span></div>
+          <div><b>Вход по ключу SSH</b><span>Как обычный ssh: без паролей, к любому числу серверов из одного клиента.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="wrap">
+      <div class="center">
+        <div class="eyebrow">Скачать</div>
+        <h2>Свежая сборка после каждого изменения</h2>
+        <p class="lede">Обе сборки собирает и публикует CI, когда изменение прошло все проверки.</p>
+      </div>
+      <div class="cards">
+        <article class="card glass">
+          <div class="head"><div class="sq g-peach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3v6.5M4.2 16.5l5.6-3.2M19.8 16.5l-5.6-3.2"/></svg></div>
+            <div><h3>Navision для Ubuntu</h3><div class="meta">UBUNTU 26.04 · X86_64</div></div></div>
+          <p>Одна команда в терминале. Установщик сам поставит пакеты, драйвер NVIDIA, если он нужен, службы и вход. Вам останется войти и ввести свои ключи.</p>
+          <div class="term">
+            <div class="tbar"><span class="tab">Терминал</span><button class="copybtn" id="copy" type="button">Копировать</button></div>
+            <pre id="cmd"><i>$ </i>curl -fsSL https://github.com/snemesh/navision/releases/download/latest-main/install.sh | sh</pre>
+          </div>
+          <ul class="notes">
+            <li>Повторный запуск той же команды обновляет систему.</li>
+            <li>Без интернета: <a href="https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz">архив, 177 МБ</a> и <a href="https://github.com/snemesh/navision/releases/download/latest-main/install.sh">install.sh</a>, затем <code>sh install.sh --file novaos-x86_64.tar.gz</code></li>
+          </ul>
+          <p class="doc">Что делает установщик и как удалить: <a href="https://github.com/snemesh/navision#установка-на-ubuntu">подробнее</a></p>
+        </article>
+        <article class="card glass">
+          <div class="head"><div class="sq g-indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+            <div><h3>Remote Navision</h3><div class="meta">MACOS · APPLE SILICON · 15 МБ</div></div></div>
+          <p>Откройте dmg и перетащите Remote Navision в «Программы». Сборка не нотаризована, поэтому первый запуск — правой кнопкой и «Открыть».</p>
+          <div><a class="btn pri" href="https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Скачать RemoteNavision.dmg</a></div>
+          <ul class="notes">
+            <li>На сервере нужна Navision с <code>nova-remote</code>, вход по ключу SSH без пароля и открытые порты UDP 60100–60199.</li>
+            <li>Если macOS не открывает: <code>xattr -dr com.apple.quarantine "/Applications/Remote Navision.app"</code></li>
+          </ul>
+          <p class="doc">Как подключиться к серверу: <a href="https://github.com/snemesh/navision#remote-navision-для-mac">подробнее</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot glass">
+      <div class="top">
+        <div class="brand">
+          <a class="mark" href="#top"><i><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3c.6 4.6 3.4 7.4 8 8-4.6.6-7.4 3.4-8 8-.6-4.6-3.4-7.4-8-8 4.6-.6 7.4-3.4 8-8z"/></svg></i>Navision</a>
+          <p>Ubuntu, которой управляет AI. Свежие сборки для Ubuntu и macOS после каждого изменения.</p>
+          <div class="row"><a class="btn pri sm" href="#download">Скачать</a><a class="btn ghost sm" href="https://github.com/snemesh/navision">Navision на GitHub</a></div>
+        </div>
+        <nav class="col" aria-label="Продукт"><h4>Продукт</h4><a href="#assistant">Помощник</a><a href="#features">Возможности</a><a href="#remote">Remote Navision</a><a href="#download">Скачать</a></nav>
+        <nav class="col" aria-label="Установка"><h4>Установка</h4><a href="https://github.com/snemesh/navision#установка-на-ubuntu">Ubuntu</a><a href="https://github.com/snemesh/navision#remote-navision-для-mac">Remote Navision</a><a href="https://github.com/snemesh/navision#без-интернета">Без интернета</a><a href="https://github.com/snemesh/navision#удалить">Удалить</a></nav>
+        <nav class="col" aria-label="Проект"><h4>Проект</h4><a href="https://github.com/snemesh/navision">GitHub</a><a href="https://github.com/snemesh/navision/releases">Все сборки</a><a href="https://github.com/snemesh/navision/issues">Сообщить об ошибке</a></nav>
+      </div>
+      <div class="bottom"><span>Navision</span><span>Пишется вместе с агентами Claude Code</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('copy'),cmd=document.getElementById('cmd');
+  var text=cmd.textContent.replace(/^\$ /,'');
+  btn.addEventListener('click',function(){
+    function done(t){btn.textContent=t;setTimeout(function(){btn.textContent='Копировать'},1600)}
+    function pick(){var r=document.createRange();r.selectNodeContents(cmd);var s=getSelection();s.removeAllRanges();s.addRange(r);done('Выделено')}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done('Скопировано')},pick)}else pick();
+  });
+})();
+</script>
+</body>
+</html>
