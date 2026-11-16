@@ -387,7 +387,7 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
         <article class="card glass">
           <div class="head"><div class="sq g-indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
             <div><h3>Remote Navision</h3><div class="meta" data-t="c2m">PREVIEW · MACOS · APPLE SILICON · 15 MB</div></div></div>
-          <p data-t="c2d">Open the dmg and drag Remote Navision to Applications. The build is not notarized, so the first time open it with a right-click and Open.</p>
+          <p data-t="c2d">Open the dmg and drag Remote Navision to Applications. The build is not notarized, so macOS refuses to open it the first time: press Open Anyway in System Settings → Privacy & Security, or run the command below.</p>
           <div><a class="btn pri" href="https://github.com/snemesh/navision/releases/download/remote-navision-latest/RemoteNavision.dmg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg><span data-t="c2btn">Download RemoteNavision.dmg</span></a></div>
           <ul class="notes">
             <li data-t="c2n1">The server needs Navision with <code>nova-remote</code>, passwordless SSH key sign-in and UDP ports 60100–60199 open.</li>
@@ -469,7 +469,7 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
     c1n2:'Без інтернету: <a href="https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz">архів, 177 МБ</a> і <a href="https://github.com/snemesh/navision/releases/download/latest-main/install.sh">install.sh</a>, потім <code>sh install.sh --file novaos-x86_64.tar.gz</code>',
     c1doc:'Що робить інсталятор і як його видалити: <a href="https://github.com/snemesh/navision#install-on-ubuntu">докладніше</a>',
     c2m:"ПОПЕРЕДНЯ ВЕРСІЯ · MACOS · APPLE SILICON · 15 МБ",
-    c2d:"Відкрийте dmg і перетягніть Remote Navision у «Програми». Збірка не нотаризована, тому вперше відкрийте її правою кнопкою й «Відкрити».",
+    c2d:"Відкрийте dmg і перетягніть Remote Navision у «Програми». Збірка не нотаризована, тому вперше macOS її не відкриє: натисніть «Все одно відкрити» в Параметрах системи → Приватність і безпека або виконайте команду нижче.",
     c2btn:"Завантажити RemoteNavision.dmg",
     c2n1:"На сервері потрібна Navision з <code>nova-remote</code>, вхід за ключем SSH без пароля і відкриті порти UDP 60100–60199.",
     c2n2:"Якщо macOS не відкриває:",
@@ -524,7 +524,7 @@ footer{padding-block:144px calc(32px + env(safe-area-inset-bottom,0px))}
     c1n2:'Bez internetu: <a href="https://github.com/snemesh/navision/releases/download/latest-main/novaos-x86_64.tar.gz">archív, 177 MB</a> a <a href="https://github.com/snemesh/navision/releases/download/latest-main/install.sh">install.sh</a>, potom <code>sh install.sh --file novaos-x86_64.tar.gz</code>',
     c1doc:'Čo robí inštalátor a ako ho odstrániť: <a href="https://github.com/snemesh/navision#install-on-ubuntu">podrobnosti</a>',
     c2m:"PREDBEŽNÁ VERZIA · MACOS · APPLE SILICON · 15 MB",
-    c2d:"Otvorte dmg a presuňte Remote Navision do priečinka Aplikácie. Zostavenie nie je notarizované, preto ho prvýkrát otvorte pravým tlačidlom a voľbou Otvoriť.",
+    c2d:"Otvorte dmg a presuňte Remote Navision do priečinka Aplikácie. Zostavenie nie je notarizované, preto ho macOS prvýkrát neotvorí: v Nastaveniach systému → Súkromie a bezpečnosť stlačte Napriek tomu otvoriť alebo spustite príkaz nižšie.",
     c2btn:"Stiahnuť RemoteNavision.dmg",
     c2n1:"Server potrebuje Navision s <code>nova-remote</code>, prihlásenie kľúčom SSH bez hesla a otvorené porty UDP 60100–60199.",
     c2n2:"Ak ho macOS neotvorí:",

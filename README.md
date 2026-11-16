@@ -63,10 +63,12 @@ sudo novaos-setup remove --packages   # and the packages the installer added
 Navision runs on an Ubuntu server without a graphics card, and your Mac draws the whole
 interface: the Dock, windows, menus and animations respond instantly, even over the network.
 
-1. Open the dmg and drag Remote Navision to Applications. The build is not notarized, so the
-   first time open it with a right-click and Open. If macOS still refuses:
+1. Open the dmg and drag Remote Navision to Applications. The build is not notarized, so
+   macOS refuses to open it the first time: press Open Anyway in System Settings → Privacy &
+   Security, or run
    `xattr -dr com.apple.quarantine "/Applications/Remote Navision.app"`.
-2. Install Navision on the server with the same command as [above](#install-on-ubuntu).
+2. Install Navision on the server with the same command as [above](#install-on-ubuntu)
+   (the app's Deploy button builds the server from source, which is not public yet).
 3. Sign in to the server with an SSH key, no password (`ssh-copy-id user@server`), and open
    UDP ports 60100–60199 on it.
 
@@ -84,6 +86,14 @@ interface: the Dock, windows, menus and animations respond instantly, even over 
 The interface of Navision itself is in Russian for now; the screenshots show it as it is.
 
 <img src="shots/brain-light.webp" alt="The Assistant window: projects on the left, an answer with links to a screen recording">
+
+## Terms
+
+Navision is free to download and use; its source code is not public yet. The builds come under
+[these terms](LICENSE): use them on your own machines for anything, but do not redistribute or
+modify them. The open-source software they are built with keeps its own licences, listed in
+`licenses/THIRD-PARTY-LICENSES.txt` of the archive and in the Mac app's
+`Contents/Resources/licenses`.
 
 ## Українською
 

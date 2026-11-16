@@ -1,0 +1,32 @@
+Navision (NovaOS) — terms of use of its builds
+
+Copyright (c) 2026 the Navision authors. All rights reserved.
+
+The source code of Navision is not public. Its builds — the release archives
+for Ubuntu, install.sh and Remote Navision for Mac — are offered free of
+charge, as a beta, on these terms:
+
+1. Use. You may download, install and use the builds on computers you own or
+   control, for any purpose, personal or commercial.
+
+2. Copies. You may not sell, rent, sublicense or redistribute the builds, or
+   offer them for download elsewhere, without the authors' written
+   permission. Link to https://github.com/snemesh/navision instead.
+
+3. Changes. You may not modify, decompile, disassemble or reverse-engineer
+   the builds, except as far as the law that applies to you allows it
+   despite this term.
+
+4. Third-party software. The builds contain open-source software of other
+   projects, each under its own licence, listed with its notices in
+   THIRD-PARTY-LICENSES.txt beside this file. Nothing here limits the rights
+   those licences give you in that software.
+
+5. No warranty. The builds are provided "as is", without warranty of any
+   kind, express or implied, including the warranties of merchantability,
+   fitness for a particular purpose and non-infringement. In no event shall
+   the authors be liable for any claim, damages or other liability arising
+   from the builds or their use, to the extent the applicable law allows.
+
+6. Later releases may come under other terms, an open-source licence among
+   them. These terms apply to the builds published with them.
