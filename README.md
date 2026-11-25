@@ -89,9 +89,12 @@ The interface of Navision itself is in Russian for now; the screenshots show it 
 
 ## Terms
 
-Navision is free to download and use; its source code is not public yet. The builds come under
-[these terms](LICENSE): use them on your own machines for anything, but do not redistribute or
-modify them. The open-source software they are built with keeps its own licences, listed in
+Navision comes under the [Functional Source License 1.1, Apache 2.0 future license](LICENSE)
+(SPDX `FSL-1.1-ALv2`). You may use, modify and redistribute it for any purpose other than a
+competing use: offering it to others in a commercial product or service that substitutes for
+it or does substantially the same. Two years after a version is released it is also available
+under the Apache License 2.0, without that limit. Its source code is not published yet.
+The open-source software the builds are made of keeps its own licences, listed in
 `licenses/THIRD-PARTY-LICENSES.txt` of the archive and in the Mac app's
 `Contents/Resources/licenses`.
 
